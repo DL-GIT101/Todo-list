@@ -1,2 +1,2 @@
 # Todo-list
-A TOP project where the OOP Principles is used and localStorage combine with JSON
+A Project from The Odin Project - Javascript Course - Organizing Your Javscript Code Introduction - OOP Principles
