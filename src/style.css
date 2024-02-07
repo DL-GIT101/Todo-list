@@ -1,4 +1,12 @@
- body {
-    background-color: antiquewhite;
-    color: blue;
- }
+:root {
+    --color-primary: #FDF7E4;
+    --color-accent: #F9E8D9;
+    --color-secondary: #DED0B6;
+    --color-background: #BBAB8C;
+    --color-invicible: rgb(0,0,0,0);
+    font-size: 20px;
+}
+
+body {
+    background-color: var(--color-background);
+}
