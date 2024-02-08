@@ -9,4 +9,19 @@
 
 body {
     background-color: var(--color-background);
+    display:grid;
+    grid-template-columns: minmax(10px,25px) 1fr minmax(10px,25px);
+    grid-template-rows: minmax(10px,100px) 4fr minmax(10px,100px);
+    min-height: 100vh;
+    margin: 0;
+    grid-template-areas: 
+    ". . ."
+    ". main ."
+    ". . .";
+}
+
+.main {
+    grid-area: main;
+    display: grid;
+    
 }
