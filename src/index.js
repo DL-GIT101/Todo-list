@@ -39,16 +39,19 @@ const managerDOM = () => {
 
         const allProjects = _manager.getProjects();
 
-        const projectButton = (buttonText) => {
+        allProjects.forEach(project => {
+            
             let button = document.createElement("button");
-            button.className = "project button";
-            button.textContent = buttonText;
-
-            return button;
-        } 
-
-        allProjects.forEach(project => mainSideBar.appendChild(projectButton(project.getTitle())));
+            button.className = "project";
+            button.textContent = project.getTitle();
+            button.addEventListener("click",() => getTodoObj(project));
+            mainSideBar.appendChild(button);
+        });
         
+    }
+
+    function getTodoObj(project) {
+        console.log(project.getTodos());
     }
 
     updateScreen();
