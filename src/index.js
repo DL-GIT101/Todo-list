@@ -15,17 +15,27 @@ const sampleTodos = [
     ["Clean Garage", "Organize tools and declutter garage space", "11-30-24", "Medium", "Chores"]
   ];
 
+const body = document.querySelector('body');
+
+const mainContainer = document.createElement("div");
+mainContainer.className = "main";
+
+const mainSideBar = document.createElement("div");
+mainSideBar.className = "sidebar";
+
+const mainBoard = document.createElement("div");
+mainBoard.className = "board";
+mainContainer.append(mainSideBar,mainBoard);
+body.append(mainContainer);
+
+
 const managerDOM = () => {
 
     const _manager = createManager();
     _manager.addProject("Default");
     _manager.addProject("Work");
 
-    const body = document.querySelector('body');
-
     const updateScreen = () => {
-
-        body.textContent = '';
 
         const allProjects = _manager.getProjects();
 
@@ -37,10 +47,8 @@ const managerDOM = () => {
             return button;
         } 
 
-        allProjects.forEach(project => body.appendChild(projectButton(project.getTitle())));
-
-        console.log(allProjects);
-
+        allProjects.forEach(project => mainSideBar.appendChild(projectButton(project.getTitle())));
+        
     }
 
     updateScreen();
