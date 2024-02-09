@@ -4,7 +4,7 @@ const createTODO = (title, description, dueDate, priority) => {
     let _description = description;
     let _dueDate = dueDate;
     let _priority = priority;
-    let _project = project;
+    let _project = "Default";
 
     const todo = {
         getTitle: () => _title,
