@@ -24,9 +24,15 @@ body {
     grid-area: main;
     display: grid;
     grid-template-columns: 1.5fr 5fr;
+    border: 2px solid var(--color-secondary);
 }
 
 .main > .sidebar {
     display: grid;
-    grid-template-rows: repeat(auto-fit, 20px)
+    grid-template-rows: repeat(auto-fit, 20px);
+    border-right: 2px solid var(--color-secondary);
+}
+
+.main > .board {
+    display: grid;
 }
