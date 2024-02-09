@@ -35,4 +35,19 @@ body {
 
 .main > .board {
     display: grid;
+    grid-template-rows: repeat(auto-fill, 100px);
+    row-gap: 3px;
+}
+
+.main > .board > .todo{
+    background-color: var(--color-accent);
+}
+
+.main > .board > .todo:hover{
+    background-color: var(--color-primary);
+    cursor: pointer;
+}
+
+.main > .board > .todo > p{
+    margin: 0;
 }
