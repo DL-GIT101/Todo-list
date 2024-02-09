@@ -16,16 +16,20 @@ const sampleTodos = [
     ["Clean Garage", "Organize tools and declutter garage space", "11-30-24", "Medium", "Chores"]
   ];
 
-  const SampleTodoData = (manager) => {
-    manager.addProject("Default");
+  const initialDataLoad = (manager) => {
+    manager.addProject("All");
+    manager.addProject("Chore");
     manager.addProject("Work");
 
     const projects = manager.getProjects();
 
-    projects[0].addTodo(createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "03-02-24", "Medium"));
-    projects[0].addTodo(createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium"));
-    projects[1].addTodo(createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High"));
-    projects[1].addTodo(createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low"));
+    projects[1].addTodo(createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "03-02-24", "Medium"));
+    projects[1].addTodo(createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium"));
+    projects[2].addTodo(createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High"));
+    projects[2].addTodo(createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low"));
+
+    const allTodos = manager.getAllTodos();
+    allTodos.forEach(todo => projects[0].addTodo(todo));
 }
 
 const screenController = () => {
@@ -54,22 +58,17 @@ const screenController = () => {
             let button = document.createElement("button");
             button.className = "project";
             button.textContent = project.getTitle();
-            button.addEventListener("click",() => getAllTodo(project));
+            button.addEventListener("click",() => getProjectAllTodo(project));
             mainSideBar.appendChild(button);
         });
         
     }
 
-    const getAllTodo = (project) => {
+    const getProjectAllTodo = (project) => {
         const todos = project.getTodos();
         mainBoard.textContent = '';
 
         todos.forEach(todo => {
-            console.log(todo.getTitle(),todo.getDescription(),todo.getDueDate(),todo.getPriority(),todo.getProject());
-
-            if(project.getTitle() !== "Default"){
-                todo.setProject(project.getTitle());
-            }
             
             const div = document.createElement("div");
             div.className = "todo";
@@ -82,6 +81,7 @@ const screenController = () => {
             dueDate.className = "dueDate";
             dueDate.textContent = todo.getDueDate();
 
+            //style depending on piority
             div.classList.add((todo.getPriority()).toLowerCase());
 
             div.append(title,dueDate);
@@ -90,7 +90,7 @@ const screenController = () => {
     }
     
 
-    SampleTodoData(manager);
+    initialDataLoad(manager);
     updateScreen();
 }
 
