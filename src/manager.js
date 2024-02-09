@@ -9,6 +9,13 @@ const createManager = () => {
         getProjects: () => _allProjects,
         addProject: (title) => _allProjects.push(createProject(title)),
         deleteProject: (projectToBeRemove) => _allProjects = _allProjects.filter(project => project !== projectToBeRemove),
+        getAllTodos: () => {
+            const allTodo = [];
+            _allProjects.forEach(project => {
+                allTodo.push(...project.getTodos());
+            })
+            return allTodo;
+        },
     }
 
     return manager;
