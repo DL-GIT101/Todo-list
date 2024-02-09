@@ -63,7 +63,7 @@ const screenController = () => {
     const getAllTodo = (project) => {
         const todos = project.getTodos();
         mainBoard.textContent = '';
-        
+
         todos.forEach(todo => {
             console.log(todo.getTitle(),todo.getDescription(),todo.getDueDate(),todo.getPriority(),todo.getProject());
 
@@ -78,19 +78,13 @@ const screenController = () => {
             title.className = "title";
             title.textContent = todo.getTitle();
 
-            const description = document.createElement("p");
-            description.className = "description";
-            description.textContent = todo.getDescription();
-
             const dueDate = document.createElement("p");
             dueDate.className = "dueDate";
             dueDate.textContent = todo.getDueDate();
 
-            const priority = document.createElement("p");
-            priority.className = "priority";
-            priority.textContent = todo.getPriority();
+            div.classList.add((todo.getPriority()).toLowerCase());
 
-            div.append(title,description,dueDate,priority);
+            div.append(title,dueDate);
             mainBoard.appendChild(div);
         })
     }

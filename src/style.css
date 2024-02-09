@@ -35,12 +35,25 @@ body {
 
 .main > .board {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 100px);
+    grid-template-rows: repeat(auto-fill, 50px);
     row-gap: 3px;
 }
 
 .main > .board > .todo{
     background-color: var(--color-accent);
+    padding-left: 5px;
+}
+
+.main > .board > .todo.low{
+    border-left: 2px solid green;
+}
+
+.main > .board > .todo.medium{
+    border-left: 2px solid orange;
+}
+
+.main > .board > .todo.high{
+    border-left: 2px solid red;
 }
 
 .main > .board > .todo:hover{
