@@ -17,28 +17,16 @@ import { createTODO } from './todo';
 
 const screenController = () => {
 
-    const body = document.querySelector('body');
-
-    const mainContainer = document.createElement("div");
-    mainContainer.className = "main";
-    
-    const mainSideBar = document.createElement("div");
-    mainSideBar.className = "sidebar";
-    
-    const mainBoard = document.createElement("div");
-    mainBoard.className = "board";
-    mainContainer.append(mainSideBar,mainBoard);
-    body.append(mainContainer);
-
     const manager = createManager();
 
     const updateScreen = () => {
+        const  sidebar = document.querySelector(".sidebar")
         // for the "All" todos
         const projectAllButton = document.createElement("button");
         projectAllButton.className = "project";
         projectAllButton.textContent = "All";
         projectAllButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
-        mainSideBar.appendChild(projectAllButton);
+        sidebar.appendChild(projectAllButton);
 
         const allProjects = manager.getProjects();
 
@@ -48,13 +36,29 @@ const screenController = () => {
             button.className = "project";
             button.textContent = project.getTitle();
             button.addEventListener("click",() => displayProjectTodos(project.getTodos()));
-            mainSideBar.appendChild(button);
+            sidebar.appendChild(button);
         });
         
     }
 
+    const layout = () => {
+        let body = document.querySelector('body');
+
+        let container = document.createElement("div");
+        container.className = "main";
+        
+        let sidebar = document.createElement("div");
+        sidebar.className = "sidebar";
+        
+        let board = document.createElement("div");
+        board.className = "board";
+        container.append(sidebar,board);
+        body.append(container);
+    }
+
     const displayProjectTodos = (todos) => {
-        mainBoard.textContent = '';
+        const board = document.querySelector(".board");
+        board.textContent = '';
 
         todos.forEach(todo => {
             
@@ -73,12 +77,13 @@ const screenController = () => {
             div.classList.add((todo.getPriority()).toLowerCase());
 
             div.append(title,dueDate);
-            mainBoard.appendChild(div);
+            board.appendChild(div);
         })
     }
     
 
     initialDataLoad(manager);
+    layout();
     updateScreen();
 }
 
