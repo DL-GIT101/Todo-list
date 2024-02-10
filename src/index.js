@@ -28,9 +28,28 @@ const screenController = () => {
         projectAllButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
         sidebar.appendChild(projectAllButton);
 
-        const allProjects = manager.getProjects();
+        displayProject(manager.getProjects());
+        
+    }
 
-        allProjects.forEach(project => {
+    const layout = () => {
+        const body = document.querySelector('body');
+
+        const container = document.createElement("div");
+        container.className = "main";
+        
+        const sidebar = document.createElement("div");
+        sidebar.className = "sidebar";
+        
+        const board = document.createElement("div");
+        board.className = "board";
+        container.append(sidebar,board);
+        body.append(container);
+    }
+
+    const displayProject = (manager) => {
+        const sidebar = document.querySelector(".sidebar");
+        manager.forEach(project => {
             
             let button = document.createElement("button");
             button.className = "project";
@@ -38,22 +57,6 @@ const screenController = () => {
             button.addEventListener("click",() => displayProjectTodos(project.getTodos()));
             sidebar.appendChild(button);
         });
-        
-    }
-
-    const layout = () => {
-        let body = document.querySelector('body');
-
-        let container = document.createElement("div");
-        container.className = "main";
-        
-        let sidebar = document.createElement("div");
-        sidebar.className = "sidebar";
-        
-        let board = document.createElement("div");
-        board.className = "board";
-        container.append(sidebar,board);
-        body.append(container);
     }
 
     const displayProjectTodos = (todos) => {
