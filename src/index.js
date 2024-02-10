@@ -4,19 +4,15 @@ import { createProject } from "./project";
 import { createTODO } from './todo';
 
   const initialDataLoad = (manager) => {
-    manager.addProject("All");
     manager.addProject("Chore");
     manager.addProject("Work");
 
     const projects = manager.getProjects();
 
-    projects[1].addTodo(createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "03-02-24", "Medium"));
-    projects[1].addTodo(createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium"));
-    projects[2].addTodo(createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High"));
-    projects[2].addTodo(createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low"));
-
-    const allTodos = manager.getAllTodos();
-    allTodos.forEach(todo => projects[0].addTodo(todo));
+    projects[0].addTodo(createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "03-02-24", "Medium"));
+    projects[0].addTodo(createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium"));
+    projects[1].addTodo(createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High"));
+    projects[1].addTodo(createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low"));
 }
 
 const screenController = () => {
@@ -37,6 +33,12 @@ const screenController = () => {
     const manager = createManager();
 
     const updateScreen = () => {
+        // for the "All" todos
+        const projectAllButton = document.createElement("button");
+        projectAllButton.className = "project";
+        projectAllButton.textContent = "All";
+        projectAllButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
+        mainSideBar.appendChild(projectAllButton);
 
         const allProjects = manager.getProjects();
 
@@ -45,14 +47,13 @@ const screenController = () => {
             let button = document.createElement("button");
             button.className = "project";
             button.textContent = project.getTitle();
-            button.addEventListener("click",() => getProjectAllTodo(project));
+            button.addEventListener("click",() => displayProjectTodos(project.getTodos()));
             mainSideBar.appendChild(button);
         });
         
     }
 
-    const getProjectAllTodo = (project) => {
-        const todos = project.getTodos();
+    const displayProjectTodos = (todos) => {
         mainBoard.textContent = '';
 
         todos.forEach(todo => {
