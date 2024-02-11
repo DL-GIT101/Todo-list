@@ -107,7 +107,7 @@ const screenController = () => {
             const div = document.createElement("div");
             div.className = "title";
             const title = document.createElement('p');
-            title.textContent = projectTitle;
+            title.textContent = projectTitle.toUpperCase();
             div.appendChild(title);
             board.appendChild(div);
         }
