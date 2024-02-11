@@ -20,7 +20,6 @@ const screenController = () => {
     const manager = createManager();
 
     const updateScreen = () => {
-     
         displayProject(manager);
         
     }
@@ -41,14 +40,16 @@ const screenController = () => {
     }
 
     const displayProject = (manager) => {
+        const board = document.querySelector(".board");
         const sidebar = document.querySelector(".sidebar");
+        board.textContent = sidebar.textContent = '';
 
         // for "All" todos
-        const button = document.createElement("button");
-        button.className = "project";
-        button.textContent = "All";
-        button.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
-        sidebar.appendChild(button);
+        const allButton = document.createElement("button");
+        allButton.className = "project";
+        allButton.textContent = "All";
+        allButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
+        sidebar.appendChild(allButton);
 
         const projects = manager.getProjects();
 
@@ -63,32 +64,43 @@ const screenController = () => {
             
             sidebar.appendChild(button);
         });
-    }
 
-    const displayProjectTodos = (todos) => {
-        const board = document.querySelector(".board");
-        board.textContent = '';
-
-        todos.forEach(todo => {
-            
-            const div = document.createElement("div");
-            div.className = "todo";
-
-            const title = document.createElement("p");
-            title.className = "title";
-            title.textContent = todo.getTitle();
-
-            const dueDate = document.createElement("p");
-            dueDate.className = "dueDate";
-            dueDate.textContent = todo.getDueDate();
-
-            //style depending on piority
-            div.classList.add((todo.getPriority()).toLowerCase());
-
-            div.append(title,dueDate);
-            board.appendChild(div);
+        //add button
+        const addButton = document.createElement("button");
+        addButton.className = "project";
+        addButton.textContent = "+";
+        addButton.addEventListener("click", () => {
+            manager.addProject("Title");
+            updateScreen();
         })
+        sidebar.appendChild(addButton);
+
+        const displayProjectTodos = (todos) => {
+            board.textContent = '';
+    
+            todos.forEach(todo => {
+                
+                const div = document.createElement("div");
+                div.className = "todo";
+    
+                const title = document.createElement("p");
+                title.className = "title";
+                title.textContent = todo.getTitle();
+    
+                const dueDate = document.createElement("p");
+                dueDate.className = "dueDate";
+                dueDate.textContent = todo.getDueDate();
+    
+                //style depending on piority
+                div.classList.add((todo.getPriority()).toLowerCase());
+    
+                div.append(title,dueDate);
+                board.appendChild(div);
+            })
+        }
     }
+
+    
     
 
     initialDataLoad(manager);
