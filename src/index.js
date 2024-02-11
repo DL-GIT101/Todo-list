@@ -48,7 +48,10 @@ const screenController = () => {
         const allButton = document.createElement("button");
         allButton.className = "project";
         allButton.textContent = "All";
-        allButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
+        allButton.addEventListener("click",() =>{ 
+            board.textContent = '';
+            displayProjectTodos(manager.getAllTodos())
+        });
         sidebar.appendChild(allButton);
 
         const projects = manager.getProjects();
