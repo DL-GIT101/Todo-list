@@ -20,15 +20,8 @@ const screenController = () => {
     const manager = createManager();
 
     const updateScreen = () => {
-        const  sidebar = document.querySelector(".sidebar")
-        // for the "All" todos
-        const projectAllButton = document.createElement("button");
-        projectAllButton.className = "project";
-        projectAllButton.textContent = "All";
-        projectAllButton.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
-        sidebar.appendChild(projectAllButton);
-
-        displayProject(manager.getProjects());
+     
+        displayProject(manager);
         
     }
 
@@ -49,12 +42,25 @@ const screenController = () => {
 
     const displayProject = (manager) => {
         const sidebar = document.querySelector(".sidebar");
-        manager.forEach(project => {
+
+        // for "All" todos
+        const button = document.createElement("button");
+        button.className = "project";
+        button.textContent = "All";
+        button.addEventListener("click",() => displayProjectTodos(manager.getAllTodos()));
+        sidebar.appendChild(button);
+
+        const projects = manager.getProjects();
+
+        projects.forEach(project => {
             
-            let button = document.createElement("button");
+            const button = document.createElement("button");
             button.className = "project";
             button.textContent = project.getTitle();
-            button.addEventListener("click",() => displayProjectTodos(project.getTodos()));
+            button.addEventListener("click",() => {
+                displayProjectTodos(project.getTodos());           
+            });
+            
             sidebar.appendChild(button);
         });
     }
