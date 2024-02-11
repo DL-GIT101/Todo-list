@@ -59,7 +59,9 @@ const screenController = () => {
             button.className = "project";
             button.textContent = project.getTitle();
             button.addEventListener("click",() => {
-                displayProjectTodos(project.getTodos());           
+                board.textContent = '';
+                projectTitle(project.getTitle()); 
+                displayProjectTodos(project.getTodos());
             });
             
             sidebar.appendChild(button);
@@ -76,7 +78,6 @@ const screenController = () => {
         sidebar.appendChild(addButton);
 
         const displayProjectTodos = (todos) => {
-            board.textContent = '';
     
             todos.forEach(todo => {
                 
@@ -98,10 +99,17 @@ const screenController = () => {
                 board.appendChild(div);
             })
         }
-    }
 
-    
-    
+        const projectTitle = (projectTitle) => {
+            const div = document.createElement("div");
+            div.className = "title";
+            const title = document.createElement('p');
+            title.textContent = projectTitle;
+            div.appendChild(title);
+            board.appendChild(div);
+        }
+
+    }
 
     initialDataLoad(manager);
     layout();
