@@ -6,6 +6,7 @@ const createProject = (title) => {
     let _allTodos = [];
 
     const project = {
+        setTitle: (newTitle) => _title = newTitle, 
         getTitle: () => _title,
         getTodos: () => _allTodos,
         addTodo: (todo) => _allTodos.push(todo),
