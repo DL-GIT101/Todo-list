@@ -110,15 +110,33 @@ const screenController = () => {
             title.textContent = projectTitle.toUpperCase();
             div.appendChild(title);
 
-            const operators  = ["edit","delete"];
+            const operators = ["rename", "delete"];
+            
             operators.forEach(operator => {
                 const button = document.createElement("button");
                 button.className = `operator ${operator}`;
                 button.textContent = operator;
                 div.appendChild(button);
             })
-            
-            board.appendChild(div);
+
+            div.children[1].addEventListener("click", () => {
+                div.textContent = '';
+                const input = document.createElement("input");
+                input.type = "text";
+                input.id = "title";
+                input.value = projectTitle;
+                
+                const button = document.createElement("button");
+                button.className = "submit";
+                button.textContent = "OK";
+                button.addEventListener("click", () => {
+                    
+                });
+                div.append(input,button);
+            });
+
+
+            board.appendChild(div);            
         }
 
     }
