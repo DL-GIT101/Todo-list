@@ -32,6 +32,7 @@ body {
     grid-template-rows: repeat(auto-fill, 40px);
     border-right: 2px solid var(--color-secondary);
     row-gap: 3px;
+    background-color: var(--color-secondary);
 }
 
 .main > .sidebar > .project{
@@ -49,6 +50,7 @@ body {
     display: grid;
     grid-template-rows: repeat(auto-fill, 50px);
     row-gap: 3px;
+    background-color: var(--color-accent);
 }
 
 .main > .board > .title{
@@ -59,13 +61,13 @@ body {
 .main > .board > .title > p{
     margin: 0;
     margin-left: 5px;
-    align-self: center;
-    justify-self: start;
-    color: var(--color-primary);
+    padding: 5px;
+    place-self: center;
+    border-radius: 20%;
 }
 
 .main > .board > .todo{
-    background-color: var(--color-accent);
+    background-color: var(--color-secondary);
     padding-left: 5px;
 }
 
