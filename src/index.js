@@ -19,11 +19,6 @@ const screenController = () => {
 
     const manager = createManager();
 
-    const updateScreen = () => {
-        displayProject(manager);
-        
-    }
-
     const layout = () => {
         const body = document.querySelector('body');
 
@@ -39,48 +34,99 @@ const screenController = () => {
         body.append(container);
     }
 
-    const displayProject = (manager) => {
+    const displayProjectList = (manager) => {
         const board = document.querySelector(".board");
         const sidebar = document.querySelector(".sidebar");
         board.textContent = sidebar.textContent = '';
+        
+        const allTodosButton = () => {
 
-        // for "All" todos
-        const allButton = document.createElement("button");
-        allButton.className = "project";
-        allButton.textContent = "All";
-        allButton.addEventListener("click",() =>{ 
-            board.textContent = '';
-            displayProjectTodos(manager.getAllTodos())
-        });
-        sidebar.appendChild(allButton);
-
-        const projects = manager.getProjects();
-
-        projects.forEach(project => {
-            
             const button = document.createElement("button");
             button.className = "project";
-            button.textContent = project.getTitle();
-            button.addEventListener("click",() => {
-                board.textContent = '';
-                projectTitle(project.getTitle()); 
-                displayProjectTodos(project.getTodos());
+            button.textContent = "All";
+            button.addEventListener("click",() => { 
+                displayProject("all");
             });
-            
             sidebar.appendChild(button);
-        });
+        }
 
-        //add button
-        const addButton = document.createElement("button");
-        addButton.className = "project";
-        addButton.textContent = "+";
-        addButton.addEventListener("click", () => {
-            manager.addProject("Title");
-            updateScreen();
-        })
-        sidebar.appendChild(addButton);
+        const projectButtons = (projects) => {
+            projects.forEach(project => {
+            
+                const button = document.createElement("button");
+                button.className = "project";
+                button.textContent = project.getTitle();
+                button.addEventListener("click",() => {
+                    displayProject(project);
+                });
+                
+                sidebar.appendChild(button);
+            });
+        }
 
-        const displayProjectTodos = (todos) => {
+        const addProjectButton = () => {
+            const button = document.createElement("button");
+            button.className = "project";
+            button.textContent = "+";
+            button.addEventListener("click", () => {
+                manager.addProject("Title");
+                displayProjectList(manager);
+            })
+            sidebar.appendChild(button);
+        }
+
+        allTodosButton();
+        projectButtons(manager.getProjects());
+        addProjectButton();
+    }
+
+    const displayProject = (project) => {
+        const board = document.querySelector(".board");
+        board.textContent = '';
+
+        const title = () => {
+            const div = document.createElement("div");
+            div.className = "title";
+            const title = document.createElement('p');
+            title.textContent = project.getTitle().toUpperCase();
+            div.appendChild(title);
+
+            const renameButton = () => {
+                const button = document.createElement("button");
+                button.className = button.textContent = "rename";
+                button.addEventListener("click", () => {
+                    div.textContent = '';
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.id = "projectTitle";
+                    input.value = project.getTitle();
+                    
+                    const button = document.createElement("button");
+                    button.className = "submit";
+                    button.textContent = "OK";
+                    button.addEventListener("click", () => {
+                        project.setTitle(input.value);
+                        displayProjectList(manager);
+                        displayProject(project);
+                    });
+                    div.append(input,button);
+                });
+                div.appendChild(button);
+            }
+
+            const deleteButton = () => {
+                const button = document.createElement("button");
+                button.className = button.textContent = "delete";
+                div.appendChild(button);
+            }
+
+            renameButton();
+            deleteButton();
+
+            board.appendChild(div);
+        }
+
+        const todos = (todos) => {
     
             todos.forEach(todo => {
                 
@@ -103,47 +149,20 @@ const screenController = () => {
             })
         }
 
-        const projectTitle = (projectTitle) => {
-            const div = document.createElement("div");
-            div.className = "title";
-            const title = document.createElement('p');
-            title.textContent = projectTitle.toUpperCase();
-            div.appendChild(title);
-
-            const operators = ["rename", "delete"];
-            
-            operators.forEach(operator => {
-                const button = document.createElement("button");
-                button.className = `operator ${operator}`;
-                button.textContent = operator;
-                div.appendChild(button);
-            })
-
-            div.children[1].addEventListener("click", () => {
-                div.textContent = '';
-                const input = document.createElement("input");
-                input.type = "text";
-                input.id = "title";
-                input.value = projectTitle;
-                
-                const button = document.createElement("button");
-                button.className = "submit";
-                button.textContent = "OK";
-                button.addEventListener("click", () => {
-                    
-                });
-                div.append(input,button);
-            });
-
-
-            board.appendChild(div);            
+        if(project === "all"){
+            todos(manager.getAllTodos());
+        }else {
+            title();
+            todos(project.getTodos());
         }
-
     }
+
+    
+        
 
     initialDataLoad(manager);
     layout();
-    updateScreen();
+    displayProjectList(manager);
 }
 
 screenController();
