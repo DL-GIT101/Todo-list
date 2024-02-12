@@ -109,6 +109,15 @@ const screenController = () => {
             const title = document.createElement('p');
             title.textContent = projectTitle.toUpperCase();
             div.appendChild(title);
+
+            const operators  = ["edit","delete"];
+            operators.forEach(operator => {
+                const button = document.createElement("button");
+                button.className = `operator ${operator}`;
+                button.textContent = operator;
+                div.appendChild(button);
+            })
+            
             board.appendChild(div);
         }
 
