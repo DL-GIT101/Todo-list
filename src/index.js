@@ -117,6 +117,10 @@ const screenController = () => {
             const deleteButton = () => {
                 const button = document.createElement("button");
                 button.className = button.textContent = "delete";
+                button.addEventListener("click", () => {
+                    manager.deleteProject(project);
+                    displayProjectList(manager);
+                });
                 div.appendChild(button);
             }
 
