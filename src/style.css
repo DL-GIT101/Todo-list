@@ -91,6 +91,10 @@ body {
     font-weight: bolder;
 }
 
+.main > .board > .todo.expanded{
+    grid-row: span 2;
+}
+
 .main > .board > .todo:hover{
     background-color: var(--color-primary);
     cursor: pointer;
