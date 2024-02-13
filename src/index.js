@@ -2,6 +2,7 @@ import './style.css';
 import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
+import { add } from 'lodash';
 
   const initialDataLoad = (manager) => {
     manager.addProject("Chore");
@@ -131,35 +132,42 @@ const screenController = () => {
         }
 
         const todos = (todos) => {
-    
-            todos.forEach(todo => {
+
+            const todoButton = (todos) => {
+                todos.forEach(todo => {
                 
+                    const div = document.createElement("div");
+                    div.className = "todo";
+        
+                    const title = document.createElement("p");
+                    title.className = "title";
+                    title.textContent = todo.getTitle();
+        
+                    const dueDate = document.createElement("p");
+                    dueDate.className = "dueDate";
+                    dueDate.textContent = todo.getDueDate();
+        
+                    //style depending on piority
+                    div.classList.add((todo.getPriority()).toLowerCase());
+        
+                    div.append(title,dueDate);
+                    board.appendChild(div);
+                });
+            }
+
+            const addButton = () => {
                 const div = document.createElement("div");
-                div.className = "todo";
-    
+                div.className = "todo add";
+            
                 const title = document.createElement("p");
                 title.className = "title";
-                title.textContent = todo.getTitle();
-    
-                const dueDate = document.createElement("p");
-                dueDate.className = "dueDate";
-                dueDate.textContent = todo.getDueDate();
-    
-                //style depending on piority
-                div.classList.add((todo.getPriority()).toLowerCase());
-    
-                div.append(title,dueDate);
+                title.textContent = "+";
+                div.appendChild(title);
                 board.appendChild(div);
-            })
+            }
 
-            const div = document.createElement("div");
-            div.className = "todo add";
-        
-            const title = document.createElement("p");
-            title.className = "title";
-            title.textContent = "+";
-            div.appendChild(title);
-            board.appendChild(div);
+            todoButton(todos);
+            addButton();
         }
 
         if(project === "all"){
