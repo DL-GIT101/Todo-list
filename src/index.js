@@ -155,11 +155,12 @@ const screenController = () => {
                         const displayTodoDetails = () => {
                             div.textContent = '';
                             const details = {
+                                "project":todo.getProject(),
                                 "title":todo.getTitle(),
                                  "description":todo.getDescription(),
                                 "dueDate": todo.getDueDate(),
                                 "priority":todo.getPriority(),
-                                "project":todo.getProject()};
+                                };
 
                             for (let detail in details) {
                                 const p = document.createElement('p');
@@ -170,7 +171,7 @@ const screenController = () => {
                                     if(project === "all"){
                                         div.appendChild(p);
                                     }else{
-                                        
+
                                     }
                                 }else {
                                     div.appendChild(p);
@@ -178,8 +179,27 @@ const screenController = () => {
                             }
                         }
 
+                        const editButton = () => {
+                            const button = document.createElement("button");
+                            button.className = button.textContent = "edit";
+                            button.addEventListener("click", () => {
+                                
+                            });
+                            div.appendChild(button);
+                        }
+            
+                        const deleteButton = () => {
+                            const button = document.createElement("button");
+                            button.className = button.textContent = "delete";
+                            button.addEventListener("click", () => {
+                                
+                            });
+                            div.appendChild(button);
+                        }
                         div.classList.add("expanded");
                         displayTodoDetails();
+                        editButton();
+                        deleteButton();
                     });
         
                     div.append(title,dueDate);
