@@ -149,6 +149,38 @@ const screenController = () => {
         
                     //style depending on piority
                     div.classList.add((todo.getPriority()).toLowerCase());
+
+                    div.addEventListener("click", () => {
+                        
+                        const displayTodoDetails = () => {
+                            div.textContent = '';
+                            const details = {
+                                "title":todo.getTitle(),
+                                 "description":todo.getDescription(),
+                                "dueDate": todo.getDueDate(),
+                                "priority":todo.getPriority(),
+                                "project":todo.getProject()};
+
+                            for (let detail in details) {
+                                const p = document.createElement('p');
+                                p.className = detail;
+                                p.textContent = details[detail];
+
+                                if(detail === "project"){
+                                    if(project === "all"){
+                                        div.appendChild(p);
+                                    }else{
+                                        
+                                    }
+                                }else {
+                                    div.appendChild(p);
+                                }
+                            }
+                        }
+
+                        div.classList.add("expanded");
+                        displayTodoDetails();
+                    });
         
                     div.append(title,dueDate);
                     board.appendChild(div);
@@ -181,6 +213,7 @@ const screenController = () => {
     initialDataLoad(manager);
     layout();
     displayProjectList(manager);
+    displayProject("all");
 }
 
 screenController();
