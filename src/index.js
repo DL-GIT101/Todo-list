@@ -151,6 +151,15 @@ const screenController = () => {
                 div.append(title,dueDate);
                 board.appendChild(div);
             })
+
+            const div = document.createElement("div");
+            div.className = "todo add";
+        
+            const title = document.createElement("p");
+            title.className = "title";
+            title.textContent = "+";
+            div.appendChild(title);
+            board.appendChild(div);
         }
 
         if(project === "all"){
@@ -160,9 +169,6 @@ const screenController = () => {
             todos(project.getTodos());
         }
     }
-
-    
-        
 
     initialDataLoad(manager);
     layout();
