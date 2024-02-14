@@ -134,6 +134,7 @@ const screenController = () => {
         const todos = (todos) => {
 
             const todoButton = (todos) => {
+
                 todos.forEach(todo => {
                     const container = document.createElement("container");
                     container.className = "todo";
@@ -151,53 +152,45 @@ const screenController = () => {
                     //style depending on piority
                     container.classList.add((todo.getPriority()).toLowerCase());
 
-                    div.addEventListener("click", () => {
-                        
-                        const displayTodoDetails = () => {
-                            div.textContent = '';
-                            const details = {
-                                "project":todo.getProject(),
-                                "title":todo.getTitle(),
-                                 "description":todo.getDescription(),
-                                "dueDate": todo.getDueDate(),
-                                "priority":todo.getPriority(),
-                                };
+                    const displayTodoDetails = () => {
+                        div.textContent = '';
+                        const details = {
+                            "project":todo.getProject(),
+                            "title":todo.getTitle(),
+                             "description":todo.getDescription(),
+                            "dueDate": todo.getDueDate(),
+                            "priority":todo.getPriority(),
+                            };
 
-                            for (let detail in details) {
-                                const p = document.createElement('p');
-                                p.className = detail;
-                                p.textContent = details[detail];
+                        for (let detail in details) {
+                            const p = document.createElement('p');
+                            p.className = detail;
+                            p.textContent = details[detail];
 
-                                if(detail === "project"){
-                                    if(project === "all"){
-                                        div.appendChild(p);
-                                    }else{
-
-                                    }
-                                }else {
+                            if(detail === "project"){
+                                if(project === "all"){
                                     div.appendChild(p);
+                                }else{
+
                                 }
+                            }else {
+                                div.appendChild(p);
                             }
                         }
+
                         if(project === "all"){
                             container.classList.add("expanded", "all");
                         }else{
                             container.classList.add("expanded");
                         }
-
-                        const todoButtons = document.querySelectorAll(".todo > button");
-                        todoButtons.forEach(button => {
-                            button.classList.add("center");
-                        });
-                        
-                        displayTodoDetails();
-                    });
+                    }
 
                     const editButton = () => {
                         const button = document.createElement("button");
                         button.className = button.textContent = "edit";
                         button.addEventListener("click", () => {
                             div.textContent = '';
+                            div.removeEventListener("click", displayTodoDetails)
 
                             const inputTitle = document.createElement("input");
                             inputTitle.setAttribute("type","text");
@@ -227,13 +220,16 @@ const screenController = () => {
                             });
 
                             
-                            const button = document.createElement("button");
-                            button.className = "submit";
-                            button.textContent = "OK";
-                            button.addEventListener("click", () => {
+                            const submit = document.createElement("button");
+                            submit.className = "submit";
+                            submit.textContent = "OK";
+                            submit.addEventListener("click", () => {
                                 
                             });
-                            div.append(inputTitle,inputDescription,inputDate,selectPriority,button);
+
+                            container.replaceChild(submit, container.childNodes[1]);
+                            console.log(container.childNodes[1]);
+                            div.append(inputTitle,inputDescription,inputDate,selectPriority);
                         });
                         container.appendChild(button);
                     }
@@ -248,6 +244,7 @@ const screenController = () => {
                     }
         
                     div.append(title,dueDate);
+                    div.addEventListener("click", displayTodoDetails);
                     container.appendChild(div);
                     editButton();
                     deleteButton();
