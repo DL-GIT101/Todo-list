@@ -119,6 +119,10 @@ body {
     cursor: pointer;
 }
 
+.main > .board > .todo > .details{
+    display: grid;
+}
+
 .main > .board > .todo > .details > p{
     margin: 0;
 }
