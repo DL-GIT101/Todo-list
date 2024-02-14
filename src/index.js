@@ -86,17 +86,17 @@ const screenController = () => {
         board.textContent = '';
 
         const title = () => {
-            const div = document.createElement("div");
-            div.className = "title";
+            const container = document.createElement("container");
+            container.className = "title";
             const title = document.createElement('p');
             title.textContent = project.getTitle().toUpperCase();
-            div.appendChild(title);
+            container.appendChild(title);
 
             const renameButton = () => {
                 const button = document.createElement("button");
                 button.className = button.textContent = "rename";
                 button.addEventListener("click", () => {
-                    div.textContent = '';
+                    container.textContent = '';
                     const input = document.createElement("input");
                     input.type = "text";
                     input.id = "projectTitle";
@@ -110,9 +110,9 @@ const screenController = () => {
                         displayProjectList(manager);
                         displayProject(project);
                     });
-                    div.append(input,button);
+                    container.append(input,button);
                 });
-                div.appendChild(button);
+                container.appendChild(button);
             }
 
             const deleteButton = () => {
@@ -122,22 +122,23 @@ const screenController = () => {
                     manager.deleteProject(project);
                     displayProjectList(manager);
                 });
-                div.appendChild(button);
+                container.appendChild(button);
             }
 
             renameButton();
             deleteButton();
 
-            board.appendChild(div);
+            board.appendChild(container);
         }
 
         const todos = (todos) => {
 
             const todoButton = (todos) => {
                 todos.forEach(todo => {
-                
+                    const container = document.createElement("container");
+                    container.className = "todo";
                     const div = document.createElement("div");
-                    div.className = "todo";
+                    div.className = "details";
         
                     const title = document.createElement("p");
                     title.className = "title";
@@ -148,7 +149,7 @@ const screenController = () => {
                     dueDate.textContent = todo.getDueDate();
         
                     //style depending on piority
-                    div.classList.add((todo.getPriority()).toLowerCase());
+                    container.classList.add((todo.getPriority()).toLowerCase());
 
                     div.addEventListener("click", () => {
                         
@@ -178,44 +179,91 @@ const screenController = () => {
                                 }
                             }
                         }
+                        if(project === "all"){
+                            container.classList.add("expanded", "all");
+                        }else{
+                            container.classList.add("expanded");
+                        }
 
-                        const editButton = () => {
-                            const button = document.createElement("button");
-                            button.className = button.textContent = "edit";
-                            button.addEventListener("click", () => {
-                                
-                            });
-                            div.appendChild(button);
-                        }
-            
-                        const deleteButton = () => {
-                            const button = document.createElement("button");
-                            button.className = button.textContent = "delete";
-                            button.addEventListener("click", () => {
-                                
-                            });
-                            div.appendChild(button);
-                        }
-                        div.classList.add("expanded");
+                        const todoButtons = document.querySelectorAll(".todo > button");
+                        todoButtons.forEach(button => {
+                            button.classList.add("center");
+                        });
+                        
                         displayTodoDetails();
-                        editButton();
-                        deleteButton();
                     });
+
+                    const editButton = () => {
+                        const button = document.createElement("button");
+                        button.className = button.textContent = "edit";
+                        button.addEventListener("click", () => {
+                            div.textContent = '';
+
+                            const inputTitle = document.createElement("input");
+                            inputTitle.setAttribute("type","text");
+                            inputTitle.id = "todoTitle";
+                            inputTitle.value = todo.getTitle();
+
+                            const inputDescription = document.createElement("input");
+                            inputDescription.setAttribute("type","text");
+                            inputDescription.id = "todoDescription";
+                            inputDescription.value = todo.getDescription();
+
+                            const inputDate = document.createElement("input");
+                            inputDate.setAttribute("type","date");
+                            inputDate.id = "todoDueDate";
+                            inputDate.value = todo.getDueDate();
+
+                            const selectPriority = document.createElement("select");
+                            selectPriority.id = "todoPriority";
+                            selectPriority.value = todo.getPriority();
+
+                            const priorities = ["high","medium","low"];
+                            priorities.forEach(priority => {
+                                const option = document.createElement("option");
+                                option.value = priority;
+                                option.textContent = priority;
+                                selectPriority.appendChild(option);
+                            });
+
+                            
+                            const button = document.createElement("button");
+                            button.className = "submit";
+                            button.textContent = "OK";
+                            button.addEventListener("click", () => {
+                                
+                            });
+                            div.append(inputTitle,inputDescription,inputDate,selectPriority,button);
+                        });
+                        container.appendChild(button);
+                    }
+        
+                    const deleteButton = () => {
+                        const button = document.createElement("button");
+                        button.className = button.textContent = "delete";
+                        button.addEventListener("click", () => {
+                            
+                        });
+                        container.appendChild(button);
+                    }
         
                     div.append(title,dueDate);
-                    board.appendChild(div);
+                    container.appendChild(div);
+                    editButton();
+                    deleteButton();
+                    board.appendChild(container);
                 });
             }
 
             const addButton = () => {
-                const div = document.createElement("div");
-                div.className = "todo add";
+                const container = document.createElement("container");
+                container.className = "todo add";
             
                 const title = document.createElement("p");
                 title.className = "title";
                 title.textContent = "+";
-                div.appendChild(title);
-                board.appendChild(div);
+                container.appendChild(title);
+                board.appendChild(container);
             }
 
             todoButton(todos);

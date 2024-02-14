@@ -66,7 +66,9 @@ body {
     border-radius: 20%;
 }
 
-.main > .board > .todo{
+.main > .board > .todo {
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
     background-color: var(--color-secondary);
     padding-left: 5px;
 }
@@ -83,6 +85,10 @@ body {
     border-left: 2px solid red;
 }
 
+.main > .board > .details{
+    padding-left: 5px;
+}
+
 .main > .board > .todo.add{
     display: grid;
     grid-template-columns: 1fr;
@@ -91,8 +97,21 @@ body {
     font-weight: bolder;
 }
 
+.main > .board > .todo.add > p{
+    margin: 0;
+}
+
 .main > .board > .todo.expanded{
-    grid-row: span 3;
+    grid-row: span 2;
+}
+
+.main > .board > .todo.expanded.all{
+    grid-row: span 2;
+    font-size: smaller;
+}
+
+.main > .board > .todo.expanded > button{
+    place-self: center;
 }
 
 .main > .board > .todo:hover{
@@ -100,6 +119,6 @@ body {
     cursor: pointer;
 }
 
-.main > .board > .todo > p{
+.main > .board > .todo > .details > p{
     margin: 0;
 }
