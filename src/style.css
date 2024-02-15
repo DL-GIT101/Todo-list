@@ -24,7 +24,7 @@ body {
     grid-area: main;
     display: grid;
     grid-template-columns: 1.5fr 5fr;
-    border: 2px solid var(--color-secondary);
+    border: 2px solid var(--color-accent);
 }
 
 .main > .sidebar {
