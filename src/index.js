@@ -6,23 +6,6 @@ import { add, sample } from 'lodash';
 
 // const screenController = () => {
 
-//     const manager = createManager();
-
-//     const layout = () => {
-//         const body = document.querySelector('body');
-
-//         const container = document.createElement("div");
-//         container.className = "main";
-        
-//         const sidebar = document.createElement("div");
-//         sidebar.className = "sidebar";
-        
-//         const board = document.createElement("div");
-//         board.className = "board";
-//         container.append(sidebar,board);
-//         body.append(container);
-//     }
-
 //     const displayProjectList = (manager) => {
 //         const board = document.querySelector(".board");
 //         const sidebar = document.querySelector(".sidebar");
@@ -263,8 +246,25 @@ import { add, sample } from 'lodash';
 //     displayProject("all");
 // }
 
+const layout = () => {
+    const body = document.querySelector('body');
 
-  const sampleManagerCreator = () => {
+    const main = document.createElement("div");
+    main.className = "main";
+    
+    const sidebar = document.createElement("div");
+    sidebar.className = "sidebar";
+    
+    const board = document.createElement("div");
+    board.className = "board";
+    main.append(sidebar,board);
+    body.append(main);
+
+    return {main, sidebar, board};
+}
+
+
+const sampleManagerCreator = () => {
 
     const sampleManager = createManager();
 
@@ -275,7 +275,7 @@ import { add, sample } from 'lodash';
     const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium");
     const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High");
     const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low");
-   
+
     choreProject.addTodo(todo1);
     choreProject.addTodo(todo4);
     workProject.addTodo(todo2);
@@ -291,8 +291,8 @@ const TodoList = () => {
 
     const sampleManager = sampleManagerCreator();
 
-    
-}
+    const {main, sidebar, board} = layout();
+}   
 
 TodoList();
 
