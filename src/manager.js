@@ -7,7 +7,7 @@ const createManager = () => {
 
     const manager = {
         getProjects: () => _allProjects,
-        addProject: (title) => _allProjects.push(createProject(title)),
+        addProject: (project) => _allProjects.push(project),
         deleteProject: (projectToBeRemove) => _allProjects = _allProjects.filter(project => project !== projectToBeRemove),
         getAllTodos: () => {
             const allTodo = [];
