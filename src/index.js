@@ -287,7 +287,12 @@ import { add, sample } from 'lodash';
     return sampleManager;
 }
 
-const sampleManager = sampleManagerCreator();
+const TodoList = () => {
 
-// screenController();
+    const sampleManager = sampleManagerCreator();
+
+    
+}
+
+TodoList();
 
