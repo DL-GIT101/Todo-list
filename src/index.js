@@ -190,7 +190,8 @@ const screenController = () => {
                         button.className = button.textContent = "edit";
                         button.addEventListener("click", () => {
                             div.textContent = '';
-                            div.removeEventListener("click", displayTodoDetails)
+                            div.removeEventListener("click", displayTodoDetails);
+                            container.classList.add("expanded");
 
                             const inputTitle = document.createElement("input");
                             inputTitle.setAttribute("type","text");
@@ -228,7 +229,6 @@ const screenController = () => {
                             });
 
                             container.replaceChild(submit, container.childNodes[1]);
-                            console.log(container.childNodes[1]);
                             div.append(inputTitle,inputDescription,inputDate,selectPriority);
                         });
                         container.appendChild(button);
@@ -252,26 +252,27 @@ const screenController = () => {
                 });
             }
 
-            const addButton = () => {
-                const container = document.createElement("container");
-                container.className = "todo add";
-            
-                const title = document.createElement("p");
-                title.className = "title";
-                title.textContent = "+";
-                container.appendChild(title);
-                board.appendChild(container);
-            }
-
             todoButton(todos);
-            addButton();
+        }
+
+        const addButton = () => {
+            const container = document.createElement("container");
+            container.className = "todo add";
+        
+            const title = document.createElement("p");
+            title.className = "title";
+            title.textContent = "+";
+            container.appendChild(title);
+            board.appendChild(container);
         }
 
         if(project === "all"){
             todos(manager.getAllTodos());
+            addButton();
         }else {
             title();
             todos(project.getTodos());
+            addButton();
         }
     }
 
