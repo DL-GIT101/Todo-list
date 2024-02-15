@@ -105,11 +105,6 @@ body {
     grid-row: span 2;
 }
 
-.main > .board > .todo.expanded.all{
-    grid-row: span 2;
-    font-size: smaller;
-}
-
 .main > .board > .todo.expanded > button{
     place-self: center;
 }
