@@ -131,7 +131,7 @@ const screenController = () => {
             board.appendChild(container);
         }
 
-        const displayTodos = (todos) => {
+        const displayAllTodos = (todos) => {
 
             todos.forEach(todo => {
                 const container = document.createElement("container");
@@ -149,39 +149,6 @@ const screenController = () => {
         
                 //style depending on piority
                 container.classList.add((todo.getPriority()).toLowerCase());
-
-                const displayTodoDetails = (todo) => {
-                    div.textContent = '';
-                    const details = {
-                        "project":todo.getProject(),
-                        "title":todo.getTitle(),
-                        "description":todo.getDescription(),
-                        "dueDate": todo.getDueDate(),
-                        "priority":todo.getPriority(),
-                    };
-
-                    for (let detail in details) {
-                        const p = document.createElement('p');
-                        p.className = detail;
-                        p.textContent = details[detail];
-
-                        if(detail === "project"){
-                            if(project === "all"){
-                                div.appendChild(p);
-                            }else{
-
-                            }
-                        }else {
-                                div.appendChild(p);
-                        }
-                    }
-
-                    if(project === "all"){
-                            container.classList.add("expanded", "all");
-                    }else{
-                            container.classList.add("expanded");
-                    }
-                }
 
                 const editButton = () => {
                     const button = document.createElement("button");
@@ -229,7 +196,7 @@ const screenController = () => {
                             todo.setDueDate(inputDate.value);
                             todo.setPriority(selectPriority.value);
                             displayProject(project);
-                            displayTodoDetails(todo);
+                            expandTodo();
                         });
 
                         container.replaceChild(submit, container.childNodes[1]);
@@ -273,13 +240,33 @@ const screenController = () => {
         }
 
         if(project === "all"){
-            displayTodos(manager.getAllTodos());
+            displayAllTodos(manager.getAllTodos());
             addTodoButton();
         }else {
             title();
-            displayTodos(project.getTodos());
+            displayAllTodos(project.getTodos());
             addTodoButton();
         }
+    }
+
+    const displayTodoDetails = (todo) => {
+        const container = document.querySelector(".board > .todo");
+        const div = document.querySelector(".board > .todo > .details");
+        div.textContent = '';
+        const details = {
+            "title":todo.getTitle(),
+            "description":todo.getDescription(),
+            "dueDate": todo.getDueDate(),
+            "priority":todo.getPriority(),
+        };
+
+        for (let detail in details) {
+            const p = document.createElement('p');
+            p.className = detail;
+            p.textContent = details[detail];
+            div.appendChild(p);
+        }
+        container.classList.add("expanded");
     }
 
     initialDataLoad(manager);
