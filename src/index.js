@@ -273,47 +273,32 @@ const layout = () => {
 }
 
 const displayProjectList = (manager,container) => {
-
     container.textContent = '';
 
-    const allbutton = createButton("project","ALL");
-    container.appendChild(allbutton);
+    const allTodosButton = createButton("project","All");
+    allTodosButton.addEventListener("click",() => { 
+       console.log(manager.getAllTodos());
+    });
+    container.append(allTodosButton);
+
+    const projects = manager.getProjects();
+    projects.forEach(project => {
     
-    // const allTodosButton = () => {
-
-    //     const button = document.createElement("button");
-    //     button.className = "project";
-    //     button.textContent = "All";
-    //     button.addEventListener("click",() => { 
-    //         displayProject("all");
-    //     });
-    //     sidebar.appendChild(button);
-    // }
-
-    // const projectButtons = (projects) => {
-    //     projects.forEach(project => {
+        const projectButton = createButton("project", project.getTitle());
+        projectButton.addEventListener("click",() => {
+            console.log(project.getTodos());
+        });
         
-    //         const button = document.createElement("button");
-    //         button.className = "project";
-    //         button.textContent = project.getTitle();
-    //         button.addEventListener("click",() => {
-    //             displayProject(project);
-    //         });
-            
-    //         sidebar.appendChild(button);
-    //     });
-    // }
-
-    // const addProjectButton = () => {
-    //     const button = document.createElement("button");
-    //     button.className = "project";
-    //     button.textContent = "+";
-    //     button.addEventListener("click", () => {
-    //         manager.addProject("Title");
-    //         displayProjectList(manager);
-    //     })
-    //     sidebar.appendChild(button);
-    // }
+        container.appendChild(projectButton);
+    });
+    
+    const addProjectButton = createButton("project", "+");
+    addProjectButton.addEventListener("click", () => {
+        const newProject = createProject("New");
+        manager.addProject(newProject);
+        displayProjectList(manager,container);
+    })
+    container.appendChild(addProjectButton);
 }
 
 
