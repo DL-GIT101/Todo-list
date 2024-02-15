@@ -208,14 +208,15 @@ const screenController = () => {
 
                         const selectPriority = document.createElement("select");
                         selectPriority.id = "todoPriority";
-                        selectPriority.value = todo.getPriority();
-                        console.log(todo.getPriority());
 
                         const priorities = ["High","Medium","Low"];
                         priorities.forEach(priority => {
                             const option = document.createElement("option");
                             option.value = priority;
                             option.textContent = priority;
+                            if(priority === todo.getPriority()){
+                                option.selected = true;
+                            }
                             selectPriority.appendChild(option);
                         });
                         
