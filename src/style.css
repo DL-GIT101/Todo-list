@@ -50,7 +50,7 @@ body {
     display: grid;
     grid-template-rows: repeat(auto-fill, 50px);
     row-gap: 3px;
-    background-color: var(--color-accent);
+    background-color: var(--color-primary);
 }
 
 .main > .board > .title{
