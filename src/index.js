@@ -246,6 +246,15 @@ import { add, sample } from 'lodash';
 //     displayProject("all");
 // }
 
+const createButton = (name,text) => {
+
+    const button = document.createElement("button");
+    button.className = name;
+    button.textContent = text;
+    return button;
+} 
+
+
 const layout = () => {
     const body = document.querySelector('body');
 
@@ -261,6 +270,50 @@ const layout = () => {
     body.append(main);
 
     return {main, sidebar, board};
+}
+
+const displayProjectList = (manager,container) => {
+
+    container.textContent = '';
+
+    const allbutton = createButton("project","ALL");
+    container.appendChild(allbutton);
+    
+    // const allTodosButton = () => {
+
+    //     const button = document.createElement("button");
+    //     button.className = "project";
+    //     button.textContent = "All";
+    //     button.addEventListener("click",() => { 
+    //         displayProject("all");
+    //     });
+    //     sidebar.appendChild(button);
+    // }
+
+    // const projectButtons = (projects) => {
+    //     projects.forEach(project => {
+        
+    //         const button = document.createElement("button");
+    //         button.className = "project";
+    //         button.textContent = project.getTitle();
+    //         button.addEventListener("click",() => {
+    //             displayProject(project);
+    //         });
+            
+    //         sidebar.appendChild(button);
+    //     });
+    // }
+
+    // const addProjectButton = () => {
+    //     const button = document.createElement("button");
+    //     button.className = "project";
+    //     button.textContent = "+";
+    //     button.addEventListener("click", () => {
+    //         manager.addProject("Title");
+    //         displayProjectList(manager);
+    //     })
+    //     sidebar.appendChild(button);
+    // }
 }
 
 
@@ -292,6 +345,8 @@ const TodoList = () => {
     const sampleManager = sampleManagerCreator();
 
     const {main, sidebar, board} = layout();
+
+    displayProjectList(sampleManager,sidebar);
 }   
 
 TodoList();
