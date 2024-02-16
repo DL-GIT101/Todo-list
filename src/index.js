@@ -6,62 +6,11 @@ import { add, sample } from 'lodash';
 
 // const screenController = () => {
 
-//     const displayProjectList = (manager) => {
-//         const board = document.querySelector(".board");
-//         const sidebar = document.querySelector(".sidebar");
-//         board.textContent = sidebar.textContent = '';
-        
-//         const allTodosButton = () => {
-
-//             const button = document.createElement("button");
-//             button.className = "project";
-//             button.textContent = "All";
-//             button.addEventListener("click",() => { 
-//                 displayProject("all");
-//             });
-//             sidebar.appendChild(button);
-//         }
-
-//         const projectButtons = (projects) => {
-//             projects.forEach(project => {
-            
-//                 const button = document.createElement("button");
-//                 button.className = "project";
-//                 button.textContent = project.getTitle();
-//                 button.addEventListener("click",() => {
-//                     displayProject(project);
-//                 });
-                
-//                 sidebar.appendChild(button);
-//             });
-//         }
-
-//         const addProjectButton = () => {
-//             const button = document.createElement("button");
-//             button.className = "project";
-//             button.textContent = "+";
-//             button.addEventListener("click", () => {
-//                 manager.addProject("Title");
-//                 displayProjectList(manager);
-//             })
-//             sidebar.appendChild(button);
-//         }
-
-//         allTodosButton();
-//         projectButtons(manager.getProjects());
-//         addProjectButton();
-//     }
-
 //     const displayProject = (project) => {
 //         const board = document.querySelector(".board");
 //         board.textContent = '';
 
-//         const title = () => {
-//             const container = document.createElement("container");
-//             container.className = "title";
-//             const title = document.createElement('p');
-//             title.textContent = project.getTitle().toUpperCase();
-//             container.appendChild(title);
+//        
 
 //             const renameButton = () => {
 //                 const button = document.createElement("button");
@@ -258,47 +207,60 @@ const createButton = (name,text) => {
 const layout = () => {
     const body = document.querySelector('body');
 
-    const main = document.createElement("div");
+    const main = document.createElement("container");
     main.className = "main";
     
-    const sidebar = document.createElement("div");
+    const sidebar = document.createElement("aside");
     sidebar.className = "sidebar";
     
-    const board = document.createElement("div");
+    const board = document.createElement("section");
     board.className = "board";
     main.append(sidebar,board);
     body.append(main);
 
-    return {main, sidebar, board};
+    return {sidebar, board};
 }
 
-const displayProjectList = (manager,container) => {
-    container.textContent = '';
+const displayProjectList = (manager,[sidebar, board]) => {
+    sidebar.textContent = '';
 
     const allTodosButton = createButton("project","All");
     allTodosButton.addEventListener("click",() => { 
        console.log(manager.getAllTodos());
     });
-    container.append(allTodosButton);
+    sidebar.appendChild(allTodosButton);
 
     const projects = manager.getProjects();
     projects.forEach(project => {
     
         const projectButton = createButton("project", project.getTitle());
         projectButton.addEventListener("click",() => {
-            console.log(project.getTodos());
+            displayProject(project,board)
         });
         
-        container.appendChild(projectButton);
+        sidebar.appendChild(projectButton);
     });
     
     const addProjectButton = createButton("project", "+");
     addProjectButton.addEventListener("click", () => {
         const newProject = createProject("New");
         manager.addProject(newProject);
-        displayProjectList(manager,container);
+        displayProjectList(manager,[sidebar, board]);
     })
-    container.appendChild(addProjectButton);
+    sidebar.appendChild(addProjectButton);
+}
+
+const  displayProject = (project, board) => {
+    board.textContent = '';
+
+    const titleProjectContainer = document.createElement("div");
+    titleProjectContainer.className = "title";
+    const titleProject = document.createElement('p');
+    titleProject.textContent = project.getTitle().toUpperCase();
+    titleProjectContainer.appendChild(titleProject);
+    board.append(titleProjectContainer);
+
+
 }
 
 
@@ -329,9 +291,9 @@ const TodoList = () => {
 
     const sampleManager = sampleManagerCreator();
 
-    const {main, sidebar, board} = layout();
+    const {sidebar, board} = layout();
 
-    displayProjectList(sampleManager,sidebar);
+    displayProjectList(sampleManager,[sidebar, board]);
 }   
 
 TodoList();
