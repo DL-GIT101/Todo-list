@@ -35,15 +35,33 @@ body {
     background-color: var(--color-secondary);
 }
 
-.main > .sidebar > .project{
+.main > .sidebar > .manager {
     font-size: 20px;
     background-color: var(--color-primary);
     border: none;
 }
 
-.main > .sidebar > .project:hover{
+.main > .sidebar > div.manager {
+    display: grid;
+}
+
+.main > .sidebar > .manager > .project {
+    place-self: stretch;
+    display: grid;
+}
+
+.main > .sidebar > .manager > .project > .title {
+    margin: 0;
+    place-self: center;
+}
+
+.main > .sidebar > .manager:hover{
     cursor: pointer;
     background-color: var(--color-accent);
+}
+
+.main > .sidebar > .manager.clicked{
+    grid-template-columns: 9fr 1fr;
 }
 
 .main > .board {
