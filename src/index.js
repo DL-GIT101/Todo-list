@@ -6,12 +6,6 @@ import { add, sample } from 'lodash';
 
 // const screenController = () => {
 
-//     const displayProject = (project) => {
-//         const board = document.querySelector(".board");
-//         board.textContent = '';
-
-//        
-
 //             const renameButton = () => {
 //                 const button = document.createElement("button");
 //                 button.className = button.textContent = "rename";
@@ -35,15 +29,7 @@ import { add, sample } from 'lodash';
 //                 container.appendChild(button);
 //             }
 
-//             const deleteButton = () => {
-//                 const button = document.createElement("button");
-//                 button.className = button.textContent = "delete";
-//                 button.addEventListener("click", () => {
-//                     manager.deleteProject(project);
-//                     displayProjectList(manager);
-//                 });
-//                 container.appendChild(button);
-//             }
+//            
 
 //             renameButton();
 //             deleteButton();
@@ -203,6 +189,12 @@ const createButton = (name,text) => {
     return button;
 } 
 
+const createDiv = (className) => {
+
+    const div = document.createElement("div");
+    div.className = className;
+    return div;
+}
 
 const layout = () => {
     const body = document.querySelector('body');
@@ -221,10 +213,10 @@ const layout = () => {
     return {sidebar, board};
 }
 
-const displayProjectList = (manager,[sidebar, board]) => {
+const displayProjectList = (manager,sidebar) => {
     sidebar.textContent = '';
 
-    const allTodosButton = createButton("project","All");
+    const allTodosButton = createButton("manager","All");
     allTodosButton.addEventListener("click",() => { 
        console.log(manager.getAllTodos());
     });
@@ -232,20 +224,36 @@ const displayProjectList = (manager,[sidebar, board]) => {
 
     const projects = manager.getProjects();
     projects.forEach(project => {
+
+        const managerDiv = createDiv("manager");
     
-        const projectButton = createButton("project", project.getTitle());
-        projectButton.addEventListener("click",() => {
-            displayProject(project,board)
+        const projectDiv = createDiv("project");
+        const titleProject = document.createElement('p');
+        titleProject.className = "title";
+        titleProject.textContent = project.getTitle();
+
+        projectDiv.addEventListener("click", () => {
+            managerDiv.classList.add("clicked");
+
+            const deleteButton = createButton("delete", "delete");
+            deleteButton.addEventListener("click",() => {
+                manager.deleteProject(project);
+                displayProjectList(manager,sidebar);
+            });
+            managerDiv.appendChild(deleteButton);
         });
-        
-        sidebar.appendChild(projectButton);
+
+        projectDiv.append(titleProject);
+        managerDiv.append(projectDiv);
+
+        sidebar.appendChild(managerDiv);
     });
     
-    const addProjectButton = createButton("project", "+");
+    const addProjectButton = createButton("manager", "+");
     addProjectButton.addEventListener("click", () => {
         const newProject = createProject("New");
         manager.addProject(newProject);
-        displayProjectList(manager,[sidebar, board]);
+        displayProjectList(manager,sidebar);
     })
     sidebar.appendChild(addProjectButton);
 }
@@ -255,11 +263,18 @@ const  displayProject = (project, board) => {
 
     const titleProjectContainer = document.createElement("div");
     titleProjectContainer.className = "title";
+
     const titleProject = document.createElement('p');
     titleProject.textContent = project.getTitle().toUpperCase();
     titleProjectContainer.appendChild(titleProject);
     board.append(titleProjectContainer);
 
+    const deleteButton = createButton("delete", "delete");
+    deleteButton.addEventListener("click", () => {
+        manager.deleteProject(project);
+        displayProjectList(manager);
+    });
+    titleProjectContainer.appendChild(deleteButton);
 
 }
 
@@ -293,7 +308,7 @@ const TodoList = () => {
 
     const {sidebar, board} = layout();
 
-    displayProjectList(sampleManager,[sidebar, board]);
+    displayProjectList(sampleManager,sidebar);
 }   
 
 TodoList();
