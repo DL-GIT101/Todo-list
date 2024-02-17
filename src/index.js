@@ -196,23 +196,6 @@ const createDiv = (className) => {
     return div;
 }
 
-const layout = () => {
-    const body = document.querySelector('body');
-
-    const main = document.createElement("container");
-    main.className = "main";
-    
-    const sidebar = document.createElement("aside");
-    sidebar.className = "sidebar";
-    
-    const board = document.createElement("section");
-    board.className = "board";
-    main.append(sidebar,board);
-    body.append(main);
-
-    return {sidebar, board};
-}
-
 const displayProjectList = (manager,sidebar) => {
     sidebar.textContent = '';
 
@@ -278,7 +261,6 @@ const  displayProject = (project, board) => {
 
 }
 
-
 const sampleManagerCreator = () => {
 
     const sampleManager = createManager();
@@ -306,9 +288,20 @@ const TodoList = () => {
 
     const sampleManager = sampleManagerCreator();
 
-    const {sidebar, board} = layout();
+    const body = document.querySelector('body');
 
-    displayProjectList(sampleManager,sidebar);
+    const main = document.createElement("container");
+    main.className = "main";
+    
+    const sidebar = document.createElement("aside");
+    sidebar.className = "sidebar";
+    
+    const board = document.createElement("section");
+    board.className = "board";
+    main.append(sidebar,board);
+    body.append(main);
+
+    
 }   
 
 TodoList();
