@@ -27,13 +27,6 @@ import { createTODO } from './todo';
 //                 });
 //                 container.appendChild(button);
 //             }
-
-//            
-
-//             renameButton();
-//             deleteButton();
-
-//             board.appendChild(container);
 //         }
 
 //         const displayAllTodos = (todos) => {
@@ -225,6 +218,27 @@ const displayProjectList = (manager) => {
     return projectListUl;
 }
 
+const updateProjectList = (manager, container) => {
+    const newProjectList = displayProjectList(manager);
+    container.replaceChild(newProjectList, container.childNodes[1]);
+}
+
+const displayProjectTitle = (project) => {
+
+    const header = document.createElement("header");
+    header.className = "project header";
+
+    const projectTitle = document.createElement('p');
+    projectTitle.className = "title";
+    projectTitle.textContent = project.getTitle();
+
+    const renameButton = createButton("rename", "rename");
+
+    header.append(projectTitle, renameButton);
+
+    return header;
+}
+
 const  displayProject = (project, board) => {
     board.textContent = '';
 
@@ -252,11 +266,6 @@ const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) =
         list.removeChild(toBeRemoveElement);
         list.classList.remove(classNameAdded);
     });
-}
-
-const updateProjectList = (manager, container) => {
-    const newProjectList = displayProjectList(manager);
-    container.replaceChild(newProjectList, container.childNodes[1]);
 }
 
 const TodoList = (manager) => {
@@ -287,36 +296,34 @@ const TodoList = (manager) => {
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
+        const projects = manager.getProjects();
         console.log(target);
 
         if(target.matches(".manager.all")){
-
+            //all button
             console.log(manager.getAllTodos());
 
         }else if(target.matches(".manager.add")){
-
+            //add button
             const newProject = createProject("New");
             manager.addProject(newProject);
             updateProjectList(manager,sidebar);
 
-        }else if(target.matches(".manager > .project > .wrapper > .title-holder")){
-
-            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            target.closest(".wrapper").classList.add("clicked");
-            const deleteButton = createButton("delete", "delete");
-            target.closest(".wrapper").appendChild(deleteButton);
-            
         }else if(target.closest(".title-holder")){
-
+            //append delete button
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
             target.closest(".wrapper").classList.add("clicked");
             const deleteButton = createButton("delete", "delete");
             target.closest(".wrapper").appendChild(deleteButton);
-
-        }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
 
             const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            const projects = manager.getProjects();
+            const projectTitle = displayProjectTitle(projects[projectIndex]);
+            board.textContent = "";
+            board.appendChild(projectTitle);
+
+        }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
+            //delete a project
+            const projectIndex = target.closest("li.project").getAttribute("projectIndex");
             manager.deleteProject(projects[projectIndex]);
             updateProjectList(manager,sidebar);
         }
