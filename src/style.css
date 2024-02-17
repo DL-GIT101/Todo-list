@@ -70,7 +70,11 @@ body {
     background-color: var(--color-accent);
 }
 
-.main > .sidebar > .manager > .project > .wrapper > .title {
+.main > .sidebar > .manager > .project > .wrapper > .title-holder{
+    display: grid;
+}
+
+.main > .sidebar > .manager > .project > .wrapper > .title-holder >.title {
     margin: 0;
     place-self: center;
 }
