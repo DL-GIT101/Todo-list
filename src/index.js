@@ -2,7 +2,6 @@ import './style.css';
 import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
-import { add, sample } from 'lodash';
 
 // const screenController = () => {
 
@@ -199,33 +198,35 @@ const createDiv = (className) => {
 const displayProjectList = (manager,container) => {
     container.textContent = '';
 
-    
-
     const projects = manager.getProjects();
     projects.forEach(project => {
 
-        const managerDiv = createDiv("manager");
+        const projectLi = document.createElement("li");
+        projectLi.className = "project";
+
+        const projectWrapper = createDiv("wrapper");
     
-        const projectDiv = createDiv("project");
-        const titleProject = document.createElement('p');
-        titleProject.className = "title";
-        titleProject.textContent = project.getTitle();
+        const titleHolder = createDiv("title-holder");
+        const title = document.createElement('p');
+        title.className = "title";
+        title.textContent = project.getTitle();
 
-        projectDiv.addEventListener("click", () => {
-            managerDiv.classList.add("clicked");
+        // projectDiv.addEventListener("click", () => {
+        //     managerDiv.classList.add("clicked");
 
-            const deleteButton = createButton("delete", "delete");
-            deleteButton.addEventListener("click",() => {
-                manager.deleteProject(project);
-                displayProjectList(manager,sidebar);
-            });
-            managerDiv.appendChild(deleteButton);
-        });
+        //     const deleteButton = createButton("delete", "delete");
+        //     deleteButton.addEventListener("click",() => {
+        //         manager.deleteProject(project);
+        //         displayProjectList(manager,sidebar);
+        //     });
+        //     managerDiv.appendChild(deleteButton);
+        // });
 
-        projectDiv.append(titleProject);
-        managerDiv.append(projectDiv);
+        titleHolder.append(title);
+        projectWrapper.appendChild(titleHolder);
+        projectLi.append(projectWrapper);
 
-        sidebar.appendChild(managerDiv);
+        container.appendChild(projectLi);
     });
     
    
@@ -296,6 +297,11 @@ const TodoList = () => {
     const managerAllTodosBtn = createButton("manager all","All");
     sidebar.appendChild(managerAllTodosBtn);
 
+    const projectListUl = document.createElement("UL");
+    projectListUl.className = "manager list";
+
+    displayProjectList(manager,projectListUl);
+    sidebar.appendChild(projectListUl);
 
     const managerAddProjectBtn = createButton("manager add", "+");
     sidebar.appendChild(managerAddProjectBtn);
