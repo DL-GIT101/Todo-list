@@ -252,6 +252,15 @@ const  displayProject = (project, board) => {
 
 }
 
+const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) => {
+    const lists = document.querySelectorAll(ListSelector);
+    lists.forEach(list => {
+        const toBeRemoveElement = list.querySelector(elementToRemoveSelector);
+        list.removeChild(toBeRemoveElement);
+        list.classList.remove(classNameAdded);
+    });
+}
+
 const TodoList = (manager) => {
 
     const body = document.querySelector('body');
@@ -293,9 +302,16 @@ const TodoList = (manager) => {
             const newProjectList = displayProjectList(manager);
             sidebar.replaceChild(newProjectList, sidebar.childNodes[1]);
         }else if(target.matches(".manager > .project > .wrapper")){
+            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
             target.classList.add("clicked");
+            const deleteButton = createButton("delete", "delete");
+            target.appendChild(deleteButton);
+            
         }else if(target.closest(".wrapper")){
+            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
             target.closest('.wrapper').classList.add("clicked");
+            const deleteButton = createButton("delete", "delete");
+            target.closest('.wrapper').appendChild(deleteButton);
         }
     });
 
