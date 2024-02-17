@@ -29,7 +29,7 @@ body {
 
 .main > .sidebar {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 40px);
+    grid-template-rows: 40px 1fr 40px;
     border-right: 2px solid var(--color-secondary);
     row-gap: 3px;
     background-color: var(--color-secondary);
@@ -41,21 +41,41 @@ body {
     border: none;
 }
 
-.main > .sidebar > div.manager {
+.main > .sidebar > .manager.list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--color-secondary);
     display: grid;
+    grid-template-rows: repeat(auto-fill, 40px);
+    row-gap: 3px;
+    overflow-y: auto;
 }
 
 .main > .sidebar > .manager > .project {
-    place-self: stretch;
     display: grid;
 }
 
-.main > .sidebar > .manager > .project > .title {
+.main > .sidebar > .manager > .project > .wrapper{
+    display: grid;
+    background-color: var(--color-primary);
+}
+
+.main > .sidebar > .manager > .project > .wrapper:hover {
+    cursor: pointer;
+    background-color: var(--color-accent);
+}
+
+.main > .sidebar > .manager > .project > .wrapper > .title-holder {
+    place-self: center;
+}
+
+.main > .sidebar > .manager > .project > .wrapper > .title-holder > .title {
     margin: 0;
     place-self: center;
 }
 
-.main > .sidebar > .manager:hover{
+.main > .sidebar > button.manager:hover{
     cursor: pointer;
     background-color: var(--color-accent);
 }
