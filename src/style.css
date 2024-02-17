@@ -61,16 +61,16 @@ body {
     background-color: var(--color-primary);
 }
 
+.main > .sidebar > .manager > .project > .wrapper.clicked{
+    grid-template-columns: 1fr 50px;
+}
+
 .main > .sidebar > .manager > .project > .wrapper:hover {
     cursor: pointer;
     background-color: var(--color-accent);
 }
 
-.main > .sidebar > .manager > .project > .wrapper > .title-holder {
-    place-self: center;
-}
-
-.main > .sidebar > .manager > .project > .wrapper > .title-holder > .title {
+.main > .sidebar > .manager > .project > .wrapper > .title {
     margin: 0;
     place-self: center;
 }
