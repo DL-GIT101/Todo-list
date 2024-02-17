@@ -196,14 +196,10 @@ const createDiv = (className) => {
     return div;
 }
 
-const displayProjectList = (manager,sidebar) => {
-    sidebar.textContent = '';
+const displayProjectList = (manager,container) => {
+    container.textContent = '';
 
-    const allTodosButton = createButton("manager","All");
-    allTodosButton.addEventListener("click",() => { 
-       console.log(manager.getAllTodos());
-    });
-    sidebar.appendChild(allTodosButton);
+    
 
     const projects = manager.getProjects();
     projects.forEach(project => {
@@ -286,7 +282,7 @@ const sampleManagerCreator = () => {
 
 const TodoList = () => {
 
-    const sampleManager = sampleManagerCreator();
+    const manager = sampleManagerCreator();
 
     const body = document.querySelector('body');
 
@@ -301,7 +297,19 @@ const TodoList = () => {
     main.append(sidebar,board);
     body.append(main);
 
-    
+    //sidebar
+
+    const allTodosButton = createButton("manager all","All");
+    sidebar.appendChild(allTodosButton);
+
+    sidebar.addEventListener("click", (event) => {
+        const target = event.target;
+
+        if(target.matches(".manager.all")){
+            console.log(manager.getAllTodos());
+        }
+    });
+
 }   
 
 TodoList();
