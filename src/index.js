@@ -208,6 +208,8 @@ const displayProjectList = (manager) => {
 
         const projectWrapper = createDiv("wrapper");
 
+        const titleHolder = createDiv("title-holder");
+
         const title = document.createElement('p');
         title.className = "title";
         title.textContent = project.getTitle();
@@ -222,8 +224,8 @@ const displayProjectList = (manager) => {
         //     });
         //     managerDiv.appendChild(deleteButton);
         // });
-
-        projectWrapper.appendChild(title);
+        titleHolder.appendChild(title)
+        projectWrapper.appendChild(titleHolder);
         projectLi.append(projectWrapper);
 
         projectListUl.appendChild(projectLi);
@@ -301,17 +303,25 @@ const TodoList = (manager) => {
             manager.addProject(newProject);
             const newProjectList = displayProjectList(manager);
             sidebar.replaceChild(newProjectList, sidebar.childNodes[1]);
-        }else if(target.matches(".manager > .project > .wrapper")){
+
+        }else if(target.matches(".manager > .project > .wrapper > .title-holder")){
+
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            target.classList.add("clicked");
+            target.closest(".wrapper").classList.add("clicked");
             const deleteButton = createButton("delete", "delete");
-            target.appendChild(deleteButton);
+            target.closest(".wrapper").appendChild(deleteButton);
             
-        }else if(target.closest(".wrapper")){
+        }else if(target.closest(".title-holder")){
+
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            target.closest('.wrapper').classList.add("clicked");
+            target.closest(".wrapper").classList.add("clicked");
             const deleteButton = createButton("delete", "delete");
-            target.closest('.wrapper').appendChild(deleteButton);
+            target.closest(".wrapper").appendChild(deleteButton);
+
+        }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
+
+            console.log("delete");
+
         }
     });
 
