@@ -228,13 +228,7 @@ const displayProjectList = (manager,container) => {
         sidebar.appendChild(managerDiv);
     });
     
-    const addProjectButton = createButton("manager", "+");
-    addProjectButton.addEventListener("click", () => {
-        const newProject = createProject("New");
-        manager.addProject(newProject);
-        displayProjectList(manager,sidebar);
-    })
-    sidebar.appendChild(addProjectButton);
+   
 }
 
 const  displayProject = (project, board) => {
@@ -299,14 +293,25 @@ const TodoList = () => {
 
     //sidebar
 
-    const allTodosButton = createButton("manager all","All");
-    sidebar.appendChild(allTodosButton);
+    const managerAllTodosBtn = createButton("manager all","All");
+    sidebar.appendChild(managerAllTodosBtn);
+
+
+    const managerAddProjectBtn = createButton("manager add", "+");
+    sidebar.appendChild(managerAddProjectBtn);
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
 
         if(target.matches(".manager.all")){
+
             console.log(manager.getAllTodos());
+
+        }else if(target.matches(".manager.add")){
+
+            const newProject = createProject("New");
+            manager.addProject(newProject);
+            console.log(manager.getProjects());
         }
     });
 
