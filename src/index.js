@@ -207,8 +207,7 @@ const displayProjectList = (manager) => {
         projectLi.className = "project";
 
         const projectWrapper = createDiv("wrapper");
-    
-        const titleHolder = createDiv("title-holder");
+
         const title = document.createElement('p');
         title.className = "title";
         title.textContent = project.getTitle();
@@ -224,8 +223,7 @@ const displayProjectList = (manager) => {
         //     managerDiv.appendChild(deleteButton);
         // });
 
-        titleHolder.append(title);
-        projectWrapper.appendChild(titleHolder);
+        projectWrapper.appendChild(title);
         projectLi.append(projectWrapper);
 
         projectListUl.appendChild(projectLi);
@@ -282,6 +280,7 @@ const TodoList = (manager) => {
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
+        console.log(target);
 
         if(target.matches(".manager.all")){
 
@@ -293,6 +292,10 @@ const TodoList = (manager) => {
             manager.addProject(newProject);
             const newProjectList = displayProjectList(manager);
             sidebar.replaceChild(newProjectList, sidebar.childNodes[1]);
+        }else if(target.matches(".manager > .project > .wrapper")){
+            target.classList.add("clicked");
+        }else if(target.closest(".wrapper")){
+            target.closest('.wrapper').classList.add("clicked");
         }
     });
 
