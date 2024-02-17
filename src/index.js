@@ -195,8 +195,10 @@ const createDiv = (className) => {
     return div;
 }
 
-const displayProjectList = (manager,container) => {
-    container.textContent = '';
+const displayProjectList = (manager) => {
+
+    const projectListUl = document.createElement("UL");
+    projectListUl.className = "manager list";
 
     const projects = manager.getProjects();
     projects.forEach(project => {
@@ -226,10 +228,10 @@ const displayProjectList = (manager,container) => {
         projectWrapper.appendChild(titleHolder);
         projectLi.append(projectWrapper);
 
-        container.appendChild(projectLi);
+        projectListUl.appendChild(projectLi);
     });
-    
-   
+
+    return projectListUl;
 }
 
 const  displayProject = (project, board) => {
@@ -251,6 +253,50 @@ const  displayProject = (project, board) => {
     titleProjectContainer.appendChild(deleteButton);
 
 }
+
+const TodoList = (manager) => {
+
+    const body = document.querySelector('body');
+
+    const main = document.createElement("container");
+    main.className = "main";
+    
+    const sidebar = document.createElement("aside");
+    sidebar.className = "sidebar";
+    
+    const board = document.createElement("section");
+    board.className = "board";
+    main.append(sidebar,board);
+    body.append(main);
+
+    //sidebar
+
+    const managerAllTodosBtn = createButton("manager all","All");
+    sidebar.appendChild(managerAllTodosBtn);
+
+    const projectList = displayProjectList(manager);
+    sidebar.appendChild(projectList);
+
+    const managerAddProjectBtn = createButton("manager add", "+");
+    sidebar.appendChild(managerAddProjectBtn);
+
+    sidebar.addEventListener("click", (event) => {
+        const target = event.target;
+
+        if(target.matches(".manager.all")){
+
+            console.log(manager.getAllTodos());
+
+        }else if(target.matches(".manager.add")){
+
+            const newProject = createProject("New");
+            manager.addProject(newProject);
+            const newProjectList = displayProjectList(manager);
+            sidebar.replaceChild(newProjectList, sidebar.childNodes[1]);
+        }
+    });
+
+}   
 
 const sampleManagerCreator = () => {
 
@@ -275,53 +321,5 @@ const sampleManagerCreator = () => {
     return sampleManager;
 }
 
-const TodoList = () => {
-
-    const manager = sampleManagerCreator();
-
-    const body = document.querySelector('body');
-
-    const main = document.createElement("container");
-    main.className = "main";
-    
-    const sidebar = document.createElement("aside");
-    sidebar.className = "sidebar";
-    
-    const board = document.createElement("section");
-    board.className = "board";
-    main.append(sidebar,board);
-    body.append(main);
-
-    //sidebar
-
-    const managerAllTodosBtn = createButton("manager all","All");
-    sidebar.appendChild(managerAllTodosBtn);
-
-    const projectListUl = document.createElement("UL");
-    projectListUl.className = "manager list";
-
-    displayProjectList(manager,projectListUl);
-    sidebar.appendChild(projectListUl);
-
-    const managerAddProjectBtn = createButton("manager add", "+");
-    sidebar.appendChild(managerAddProjectBtn);
-
-    sidebar.addEventListener("click", (event) => {
-        const target = event.target;
-
-        if(target.matches(".manager.all")){
-
-            console.log(manager.getAllTodos());
-
-        }else if(target.matches(".manager.add")){
-
-            const newProject = createProject("New");
-            manager.addProject(newProject);
-            console.log(manager.getProjects());
-        }
-    });
-
-}   
-
-TodoList();
+TodoList(sampleManagerCreator());
 
