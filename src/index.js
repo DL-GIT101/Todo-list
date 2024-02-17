@@ -201,10 +201,11 @@ const displayProjectList = (manager) => {
     projectListUl.className = "manager list";
 
     const projects = manager.getProjects();
-    projects.forEach(project => {
+    projects.forEach((project, index) => {
 
         const projectLi = document.createElement("li");
         projectLi.className = "project";
+        projectLi.setAttribute("projectIndex",index);
 
         const projectWrapper = createDiv("wrapper");
 
@@ -214,16 +215,6 @@ const displayProjectList = (manager) => {
         title.className = "title";
         title.textContent = project.getTitle();
 
-        // projectDiv.addEventListener("click", () => {
-        //     managerDiv.classList.add("clicked");
-
-        //     const deleteButton = createButton("delete", "delete");
-        //     deleteButton.addEventListener("click",() => {
-        //         manager.deleteProject(project);
-        //         displayProjectList(manager,sidebar);
-        //     });
-        //     managerDiv.appendChild(deleteButton);
-        // });
         titleHolder.appendChild(title)
         projectWrapper.appendChild(titleHolder);
         projectLi.append(projectWrapper);
@@ -261,6 +252,11 @@ const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) =
         list.removeChild(toBeRemoveElement);
         list.classList.remove(classNameAdded);
     });
+}
+
+const updateProjectList = (manager, container) => {
+    const newProjectList = displayProjectList(manager);
+    container.replaceChild(newProjectList, container.childNodes[1]);
 }
 
 const TodoList = (manager) => {
@@ -301,8 +297,7 @@ const TodoList = (manager) => {
 
             const newProject = createProject("New");
             manager.addProject(newProject);
-            const newProjectList = displayProjectList(manager);
-            sidebar.replaceChild(newProjectList, sidebar.childNodes[1]);
+            updateProjectList(manager,sidebar);
 
         }else if(target.matches(".manager > .project > .wrapper > .title-holder")){
 
@@ -320,8 +315,10 @@ const TodoList = (manager) => {
 
         }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
 
-            console.log("delete");
-
+            const projectIndex = target.closest("li.project").getAttribute("projectIndex");
+            const projects = manager.getProjects();
+            manager.deleteProject(projects[projectIndex]);
+            updateProjectList(manager,sidebar);
         }
     });
 
