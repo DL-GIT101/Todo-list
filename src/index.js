@@ -301,6 +301,8 @@ const TodoList = (manager) => {
 
         if(target.matches(".manager.all")){
             //all button
+            board.textContent = "";
+            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
             console.log(manager.getAllTodos());
 
         }else if(target.matches(".manager.add")){
@@ -308,6 +310,17 @@ const TodoList = (manager) => {
             const newProject = createProject("New");
             manager.addProject(newProject);
             updateProjectList(manager,sidebar);
+            //add delete button to latest project
+            const lastProjectLi = sidebar.childNodes[1].lastElementChild;
+            const wrapper = lastProjectLi.childNodes[0];
+            wrapper.classList.add("clicked");
+            const deleteButton = createButton("delete", "delete");
+            wrapper.appendChild(deleteButton);
+            const projectIndex = lastProjectLi.getAttribute("projectIndex");
+            //display the projectTitle
+            const projectTitle = displayProjectTitle(projects[projectIndex]);
+            board.textContent = "";
+            board.appendChild(projectTitle);
 
         }else if(target.closest(".title-holder")){
             //append delete button
@@ -315,7 +328,7 @@ const TodoList = (manager) => {
             target.closest(".wrapper").classList.add("clicked");
             const deleteButton = createButton("delete", "delete");
             target.closest(".wrapper").appendChild(deleteButton);
-
+            //append project title on board
             const projectIndex = target.closest("li.project").getAttribute("projectIndex");
             const projectTitle = displayProjectTitle(projects[projectIndex]);
             board.textContent = "";
