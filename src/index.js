@@ -223,14 +223,15 @@ const updateProjectList = (manager, container) => {
     container.replaceChild(newProjectList, container.childNodes[1]);
 }
 
-const displayProjectTitle = (project) => {
+const displayProjectTitle = (project, index) => {
 
     const header = document.createElement("header");
-    header.className = "project header";
+    header.className = "project";
+    header.setAttribute("projectIndex",index);
 
     const projectTitle = document.createElement('p');
     projectTitle.className = "title";
-    projectTitle.textContent = project.getTitle();
+    projectTitle.textContent = project.getTitle().toUpperCase();
 
     const renameButton = createButton("rename", "rename");
 
@@ -297,7 +298,6 @@ const TodoList = (manager) => {
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
         const projects = manager.getProjects();
-        console.log(target);
 
         if(target.matches(".manager.all")){
             //all button
@@ -318,7 +318,7 @@ const TodoList = (manager) => {
             wrapper.appendChild(deleteButton);
             const projectIndex = lastProjectLi.getAttribute("projectIndex");
             //display the projectTitle
-            const projectTitle = displayProjectTitle(projects[projectIndex]);
+            const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
             board.textContent = "";
             board.appendChild(projectTitle);
 
@@ -330,7 +330,7 @@ const TodoList = (manager) => {
             target.closest(".wrapper").appendChild(deleteButton);
             //append project title on board
             const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            const projectTitle = displayProjectTitle(projects[projectIndex]);
+            const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
             board.textContent = "";
             board.appendChild(projectTitle);
 
@@ -339,6 +339,14 @@ const TodoList = (manager) => {
             const projectIndex = target.closest("li.project").getAttribute("projectIndex");
             manager.deleteProject(projects[projectIndex]);
             updateProjectList(manager,sidebar);
+        }
+    });
+
+    board.addEventListener("click", (event) => {
+        const target = event.target;
+
+        if(target.matches("")){
+
         }
     });
 
