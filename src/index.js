@@ -344,9 +344,37 @@ const TodoList = (manager) => {
 
     board.addEventListener("click", (event) => {
         const target = event.target;
+        const projects = manager.getProjects();
 
-        if(target.matches("")){
-
+        if(target.matches(".board > .project > .rename")){
+            //get current project obj
+            const header = target.closest(".project");
+            const currentProject = projects[header.getAttribute("projectIndex")];
+            //create input 
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = "projectTitle";
+            input.value = currentProject.getTitle();
+            header.replaceChild(input, header.childNodes[0]);
+            //add submit button
+            const okButton = createButton("submit", "ok");
+            header.replaceChild(okButton,header.childNodes[1]);
+        }else if(target.matches(".board > .project > .submit")){
+            //get input value
+            const header = target.closest(".project");
+            const projectIndex = header.getAttribute("projectIndex");
+            const currentProject = projects[projectIndex];
+            const input = header.childNodes[0];
+            //ser input value
+            currentProject.setTitle(input.value);
+            //update the title
+            const projectTitle = displayProjectTitle(currentProject,projectIndex);
+            board.textContent = "";
+            board.appendChild(projectTitle);
+            //update title in sidebar
+            const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
+            const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
+            title.textContent = input.value;
         }
     });
 
