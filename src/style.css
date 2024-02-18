@@ -95,12 +95,12 @@ body {
     background-color: var(--color-primary);
 }
 
-.main > .board > .project.header{
+.main > .board > .project{
     display: grid;
     grid-template-columns: 9fr 1fr;
 }
 
-.main > .board > .project.header > .title{
+.main > .board > .project > .title{
     margin: 0;
     margin-left: 5px;
     padding: 5px;
