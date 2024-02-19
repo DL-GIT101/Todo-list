@@ -90,9 +90,14 @@ body {
 
 .main > .board {
     display: grid;
-    grid-template-rows: repeat(auto-fill, 50px);
-    row-gap: 3px;
-    background-color: var(--color-primary);
+    grid-template-rows: 40px 1fr 40px;
+    row-gap: 5px;
+    background-color: var(--color-background);
+}
+
+.main > .board > .all{
+   margin: 0;
+   place-self: center;
 }
 
 .main > .board > .project{
@@ -105,30 +110,53 @@ body {
     margin-left: 5px;
     padding: 5px;
     place-self: center;
-    border-radius: 20%;
 }
 
-.main > .board > .todo {
+.main > .board > .todo-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
     display: grid;
+    grid-template-rows: repeat(auto-fill, 50px);
+    row-gap: 3px;
+    overflow-y: auto;
+}
+
+.main > .board > .todo-list > .todo {
+    display: grid;
+}
+
+.main > .board > .todo-list > .todo > .wrapper{
+    display: grid;
+    background-color: var(--color-accent);
     grid-template-columns: 8fr 1fr 1fr;
+}
+
+.main > .board > .todo-list > .todo > .wrapper > .details{
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 25px);
+    padding-left: 5px;
+}
+
+.main > .board > .todo-list > .todo > .wrapper > .details.low{
+    border-left: 5px solid green;
+}
+
+.main > .board > .todo-list > .todo > .wrapper > .details.medium{
+    border-left: 5px solid orange;
+}
+
+.main > .board > .todo-list > .todo > .wrapper > .details.high{
+    border-left: 5px solid red;
+}
+
+.main > .board > .todo-list > .todo > .wrapper > .details:hover{
     background-color: var(--color-secondary);
-    padding-left: 5px;
+    cursor: pointer;
 }
 
-.main > .board > .todo.low{
-    border-left: 2px solid green;
-}
-
-.main > .board > .todo.medium{
-    border-left: 2px solid orange;
-}
-
-.main > .board > .todo.high{
-    border-left: 2px solid red;
-}
-
-.main > .board > .details{
-    padding-left: 5px;
+.main > .board > .todo-list > .todo > .wrapper > .details > p{
+   margin: 0;
 }
 
 .main > .board > .todo.add{
@@ -149,17 +177,4 @@ body {
 
 .main > .board > .todo.expanded > button{
     place-self: center;
-}
-
-.main > .board > .todo:hover{
-    background-color: var(--color-primary);
-    cursor: pointer;
-}
-
-.main > .board > .todo > .details{
-    display: grid;
-}
-
-.main > .board > .todo > .details > p{
-    margin: 0;
 }
