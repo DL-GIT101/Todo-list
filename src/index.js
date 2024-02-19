@@ -3,32 +3,6 @@ import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
 
-// const screenController = () => {
-
-//             const renameButton = () => {
-//                 const button = document.createElement("button");
-//                 button.className = button.textContent = "rename";
-//                 button.addEventListener("click", () => {
-//                     container.textContent = '';
-//                     const input = document.createElement("input");
-//                     input.type = "text";
-//                     input.id = "projectTitle";
-//                     input.value = project.getTitle();
-                    
-//                     const button = document.createElement("button");
-//                     button.className = "submit";
-//                     button.textContent = "OK";
-//                     button.addEventListener("click", () => {
-//                         project.setTitle(input.value);
-//                         displayProjectList(manager);
-//                         displayProject(project);
-//                     });
-//                     container.append(input,button);
-//                 });
-//                 container.appendChild(button);
-//             }
-//         }
-
 //         const displayAllTodos = (todos) => {
 
 //             todos.forEach(todo => {
@@ -240,6 +214,42 @@ const displayProjectTitle = (project, index) => {
     return header;
 }
 
+const displayProjectTodos = (todos) => {
+
+    const todoUl = document.createElement("UL");
+    todoUl.className = "todo-list";
+
+    todos.forEach((todo, index) => {
+
+        const todoLi = document.createElement("li");
+        todoLi.className = "todo";
+        todoLi.setAttribute("todoIndex",index);
+
+        const todoWrapper = createDiv("wrapper");
+
+        const details = document.createElement("div");
+        details.className = "details";
+
+        const title = document.createElement("p");
+        title.className = "title";
+        title.textContent = todo.getTitle();
+
+        const dueDate = document.createElement("p");
+        dueDate.className = "dueDate";
+        dueDate.textContent = todo.getDueDate();
+
+        //style depending on piority
+        details.classList.add((todo.getPriority()).toLowerCase());
+
+        details.append(title,dueDate);
+        todoWrapper.append(details);
+        todoLi.appendChild(todoWrapper);
+        todoUl.appendChild(todoLi);
+    });
+
+    return todoUl;
+}
+
 const  displayProject = (project, board) => {
     board.textContent = '';
 
@@ -303,7 +313,12 @@ const TodoList = (manager) => {
             //all button
             board.textContent = "";
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            console.log(manager.getAllTodos());
+            const title = document.createElement('p');
+            title.className = "all";
+            title.textContent = "Todos";
+            const allTodos = manager.getAllTodos();
+            const allTodosUl = displayProjectTodos(allTodos);
+            board.append(title,allTodosUl);
 
         }else if(target.matches(".manager.add")){
             //add button
@@ -331,8 +346,9 @@ const TodoList = (manager) => {
             //append project title on board
             const projectIndex = target.closest("li.project").getAttribute("projectIndex");
             const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
+            const projectTodos = displayProjectTodos(projects[projectIndex].getTodos());
             board.textContent = "";
-            board.appendChild(projectTitle);
+            board.append(projectTitle,projectTodos);
 
         }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
             //delete a project
