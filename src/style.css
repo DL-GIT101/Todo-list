@@ -159,22 +159,27 @@ body {
    margin: 0;
 }
 
-.main > .board > .todo.add{
-    display: grid;
-    grid-template-columns: 1fr;
-    place-items: center;
-    font-size: larger;
-    font-weight: bolder;
-}
-
-.main > .board > .todo.add > p{
-    margin: 0;
-}
-
-.main > .board > .todo.expanded{
+.main > .board > .todo-list > .todo.expand {
     grid-row: span 2;
 }
 
-.main > .board > .todo.expanded > button{
-    place-self: center;
+.main > .board > .todo-list > .todo.expand > .wrapper{
+    grid-template-rows: repeat(4, 25px);
+    grid-template-areas: 
+    "details . ."
+    "details edit delete"
+    "details edit delete"
+    "details . .";
+}
+
+.main > .board > .todo-list > .todo.expand > .wrapper > .details{
+    grid-area: details;
+}
+
+.main > .board > .todo-list > .todo.expand > .wrapper > .edit{
+    grid-area: edit;
+}
+
+.main > .board > .todo-list > .todo.expand > .wrapper > .delete{
+    grid-area: delete;
 }
