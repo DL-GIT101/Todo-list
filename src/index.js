@@ -274,12 +274,14 @@ const  displayProject = (project, board) => {
 }
 
 const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) => {
-    const lists = document.querySelectorAll(ListSelector);
-    lists.forEach(list => {
-        const toBeRemoveElement = list.querySelector(elementToRemoveSelector);
-        list.removeChild(toBeRemoveElement);
-        list.classList.remove(classNameAdded);
-    });
+    const clickedList = document.querySelector(ListSelector);
+    if(clickedList){
+        clickedList.classList.remove(classNameAdded);
+        const toBeRemoveElement = clickedList.querySelector(elementToRemoveSelector);
+        clickedList.removeChild(toBeRemoveElement);
+    }
+    
+    
 }
 
 const TodoList = (manager) => {
@@ -396,6 +398,10 @@ const TodoList = (manager) => {
             const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
             title.textContent = input.value;
         }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
+            const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
+            if(expandedTodo){
+                expandedTodo.classList.remove("expand");
+            }
             target.closest(".todo").classList.add("expand");
         }
     });
