@@ -242,7 +242,10 @@ const displayProjectTodos = (todos) => {
         details.classList.add((todo.getPriority()).toLowerCase());
 
         details.append(title,dueDate);
-        todoWrapper.append(details);
+
+        const editButton = createButton("edit","edit");
+        const deleteButton = createButton("delete", "delete");
+        todoWrapper.append(details,editButton,deleteButton);
         todoLi.appendChild(todoWrapper);
         todoUl.appendChild(todoLi);
     });
@@ -360,6 +363,7 @@ const TodoList = (manager) => {
 
     board.addEventListener("click", (event) => {
         const target = event.target;
+        console.log(target);
         const projects = manager.getProjects();
 
         if(target.matches(".board > .project > .rename")){
@@ -391,6 +395,8 @@ const TodoList = (manager) => {
             const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
             const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
             title.textContent = input.value;
+        }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
+            target.closest(".todo").classList.add("expand");
         }
     });
 
