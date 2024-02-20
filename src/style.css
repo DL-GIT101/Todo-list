@@ -183,3 +183,9 @@ body {
 .main > .board > .todo-list > .todo.expand > .wrapper > .delete{
     grid-area: delete;
 }
+
+.main > .board > .todo-list > .todo.expand > .wrapper > .edit-details{
+    grid-area: details;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 25px);
+}
