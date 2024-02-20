@@ -432,7 +432,8 @@ const TodoList = (manager) => {
             //update the title
             const projectTitle = displayProjectTitle(currentProject,projectIndex);
             board.textContent = "";
-            board.appendChild(projectTitle);
+            const projectTodos = displayProjectTodos(currentProject.getTodos());
+            board.append(projectTitle,projectTodos);
             //update title in sidebar
             const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
             const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
