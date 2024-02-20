@@ -3,25 +3,6 @@ import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
 
-//         const displayAllTodos = (todos) => {
-
-//             todos.forEach(todo => {
-//                 const container = document.createElement("container");
-//                 container.className = "todo";
-//                 const div = document.createElement("div");
-//                 div.className = "details";
-        
-//                 const title = document.createElement("p");
-//                 title.className = "title";
-//                 title.textContent = todo.getTitle();
-        
-//                 const dueDate = document.createElement("p");
-//                 dueDate.className = "dueDate";
-//                 dueDate.textContent = todo.getDueDate();
-        
-//                 //style depending on piority
-//                 container.classList.add((todo.getPriority()).toLowerCase());
-
 //                 const editButton = () => {
 //                     const button = document.createElement("button");
 //                     button.className = button.textContent = "edit";
@@ -287,6 +268,47 @@ const displayExpandedTodo = (todo) => {
     return details;
 }
 
+const editDetailsInput = (todo) => {
+
+    const wrapper = createDiv("wrapper");
+    const detailsInputDiv = createDiv("edit-details");
+
+    const titleInput = document.createElement("input");
+    titleInput.setAttribute("type","text");
+    titleInput.id = "title";
+    titleInput.value = todo.getTitle();
+
+    const descriptionInput = document.createElement("input");
+    descriptionInput.setAttribute("type","text");
+    descriptionInput.id = "description";
+    descriptionInput.value = todo.getDescription();
+
+    const dueDateInput = document.createElement("input");
+    dueDateInput.setAttribute("type","date");
+    dueDateInput.id = "dueDate";
+    dueDateInput.value = todo.getDueDate();
+
+    const priortySelect = document.createElement("select");
+    priortySelect.id = "todoPriority";
+
+    const priorities = ["High","Medium","Low"];
+    priorities.forEach(priority => {
+        const option = document.createElement("option");
+        option.value = priority;
+        option.textContent = priority;
+        if(priority === todo.getPriority()){
+            option.selected = true;
+        }
+        priortySelect.appendChild(option);
+    });
+    
+    detailsInputDiv.append(titleInput,descriptionInput,dueDateInput,priortySelect);
+
+    const submitButton = createButton("submit","submit");
+    wrapper.append(detailsInputDiv,submitButton)
+    return wrapper;
+}
+
 const  displayProject = (project, board) => {
     board.textContent = '';
 
@@ -466,6 +488,37 @@ const TodoList = (manager) => {
                 const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
                 wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
             }
+        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .edit")){
+            const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+            let  todos = projects[projectIndex].getTodos();
+            const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+            const todo = todos[todoIndex];
+            const todoList = target.closest(".todo");
+            if(todoList){
+                todoList.classList.add("expand");
+            }
+
+            const detailsInput = editDetailsInput(todo);
+            todoList.replaceChild(detailsInput,todoList.childNodes[0]);
+        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
+            const project = board.querySelector(".project");
+            const projectIndex = project.getAttribute("projectIndex");
+            let  todos = projects[projectIndex].getTodos();
+            const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+            const todo = todos[todoIndex];
+
+            const todoList = target.closest(".todo");
+            const details = todoList.childNodes[0].childNodes[0];
+
+            todo.setTitle(details.childNodes[0].value);
+            todo.setDescription(details.childNodes[1].value);
+            todo.setDueDate(details.childNodes[2].value);
+            todo.setPriority(details.childNodes[3].value);
+
+            const projectTodoUL = displayProjectTodos(projects[projectIndex].getTodos());
+            board.replaceChild(projectTodoUL, board.childNodes[1]);
+            const expandedDetail = displayExpandedTodo(todo);
+            todoList.replaceChild(expandedDetail,todoList.childNodes[0]);
         }
     });
 
@@ -478,10 +531,10 @@ const sampleManagerCreator = () => {
     const workProject = createProject("Work");
     const choreProject = createProject("Project");
 
-    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "03-02-24", "Medium");
-    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "06-25-24", "Medium");
-    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "02-15-24", "High");
-    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "04-18-24", "Low");
+    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "2024-03-02", "Medium");
+    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium");
+    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High");
+    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "2024-04-18", "Low");
 
     choreProject.addTodo(todo1);
     choreProject.addTodo(todo4);
