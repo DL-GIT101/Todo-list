@@ -66,7 +66,7 @@ body {
     background-color: var(--color-primary);
 }
 
-.main > .manager > .project-list > .project > .wrapper.clicked{
+.main > .manager > .project-list > .project.current > .wrapper{
     grid-template-columns: 1fr 50px;
 }
 
@@ -75,7 +75,11 @@ body {
     background-color: var(--color-accent);
 }
 
-.main > .manager > .project-list > .project > .wrapper >.title {
+.main > .manager > .project-list > .project > .wrapper > .title-holder {
+    display: grid;
+}
+
+.main > .manager > .project-list > .project > .wrapper > .title-holder > .title {
     margin: 0;
     place-self: center;
 }

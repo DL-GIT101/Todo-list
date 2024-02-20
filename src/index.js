@@ -154,11 +154,14 @@ const createProjectLi = (project) => {
 
     const wrapper = createDiv("wrapper");
 
+    const holder = createDiv("title-holder");
+
     const title = document.createElement('p');
     title.className = "title";
     title.textContent = project.getTitle();
 
-    wrapper.appendChild(title);
+    holder.appendChild(title);
+    wrapper.appendChild(holder);
     list.append(wrapper);
 
     return list;
@@ -177,6 +180,18 @@ const createProjectList = (projectList) => {
     });
 
     return projectListUL;
+}
+
+const createCurrentProjectLi = (projectLi) => {
+
+    projectLi.classList.add("current");
+    const wrapper = projectLi.childNodes[0];
+    
+    const deleteButton = createButton("delete","delete");
+
+    wrapper.appendChild(deleteButton);
+
+    return projectLi;
 }
 
 const updateProjectList = (manager, container) => {
@@ -315,17 +330,6 @@ const editDetailsInput = (todo) => {
     return wrapper;
 }
 
-const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) => {
-    const clickedList = document.querySelector(ListSelector);
-    if(clickedList){
-        clickedList.classList.remove(classNameAdded);
-        const toBeRemoveElement = clickedList.querySelector(elementToRemoveSelector);
-        clickedList.removeChild(toBeRemoveElement);
-    }
-    
-    
-}
-
 const TodoList = (manager) => {
 
     //layout
@@ -388,24 +392,37 @@ const TodoList = (manager) => {
             // board.textContent = "";
             // board.appendChild(projectTitle);
 
-        }else if(target.closest(".title")){
-            //append delete button
-            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            target.closest(".wrapper").classList.add("clicked");
-            const deleteButton = createButton("delete", "delete");
-            target.closest(".wrapper").appendChild(deleteButton);
+        }else if(target.closest(".title-holder")){ //project List
+            //if clicked project was current
+            if(!target.closest(".project.current")){
+                //remove previous current project
+                const previousCurrentProjectLi = sidebar.querySelector(".project-list > .project.current");
+                if(previousCurrentProjectLi){
+                    const previousCurrentProjectLiIndex = previousCurrentProjectLi.getAttribute("index");
+                    const previousProjectLi = createProjectLi(projects[previousCurrentProjectLiIndex]);
+                    previousProjectLi.setAttribute("index", previousCurrentProjectLiIndex);
+                    projectList.replaceChild(previousProjectLi, projectList.childNodes[previousCurrentProjectLiIndex]);
+                }
+                //append delete button
+                const clickedProjectLi = target.closest(".project");
+                const clickedProjectLiIndex = clickedProjectLi.getAttribute("index");
+                const currenProjectLi = createCurrentProjectLi(clickedProjectLi);
+                currenProjectLi.setAttribute("index", clickedProjectLiIndex);
+                projectList.replaceChild(currenProjectLi, projectList.childNodes[clickedProjectLiIndex]);
+            }
+            
             //append project title on board
-            const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
-            const projectTodos = displayProjectTodos(projects[projectIndex].getTodos());
-            board.textContent = "";
-            board.append(projectTitle,projectTodos);
+            // const projectIndex = target.closest("li.project").getAttribute("projectIndex");
+            // const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
+            // const projectTodos = displayProjectTodos(projects[projectIndex].getTodos());
+            // board.textContent = "";
+            // board.append(projectTitle,projectTodos);
 
         }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
             //delete a project
-            const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            manager.deleteProject(projects[projectIndex]);
-            updateProjectList(manager,sidebar);
+            // const projectIndex = target.closest("li.project").getAttribute("projectIndex");
+            // manager.deleteProject(projects[projectIndex]);
+            // updateProjectList(manager,sidebar);
         }
     });
 
