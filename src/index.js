@@ -227,21 +227,7 @@ const displayProjectTodos = (todos) => {
 
         const todoWrapper = createDiv("wrapper");
 
-        const details = document.createElement("div");
-        details.className = "details";
-
-        const title = document.createElement("p");
-        title.className = "title";
-        title.textContent = todo.getTitle();
-
-        const dueDate = document.createElement("p");
-        dueDate.className = "dueDate";
-        dueDate.textContent = todo.getDueDate();
-
-        //style depending on piority
-        details.classList.add((todo.getPriority()).toLowerCase());
-
-        details.append(title,dueDate);
+        const details = displayTodo(todo);
 
         const editButton = createButton("edit","edit");
         const deleteButton = createButton("delete", "delete");
@@ -251,6 +237,54 @@ const displayProjectTodos = (todos) => {
     });
 
     return todoUl;
+}
+
+const displayTodo = (todo) => {
+
+    const details = createDiv("details");
+
+    const title = document.createElement("p");
+    title.className = "title";
+    title.textContent = todo.getTitle();
+
+    const dueDate = document.createElement("p");
+    dueDate.className = "dueDate";
+    dueDate.textContent = todo.getDueDate();
+
+    //style depending on piority
+    details.classList.add((todo.getPriority()).toLowerCase());
+
+    details.append(title,dueDate);
+
+    return details;
+}
+
+const displayExpandedTodo = (todo) => {
+
+    const details = createDiv("details");
+
+    const title = document.createElement("p");
+    title.className = "title";
+    title.textContent = todo.getTitle();
+
+    const description = document.createElement("p");
+    description.className = "description";
+    description.textContent = todo.getDescription();
+
+    const dueDate = document.createElement("p");
+    dueDate.className = "dueDate";
+    dueDate.textContent = todo.getDueDate();
+
+    const priority = document.createElement("p");
+    priority.className = "priority";
+    priority.textContent = todo.getPriority();
+
+    //style depending on piority
+    details.classList.add((todo.getPriority()).toLowerCase());
+
+    details.append(title,description,dueDate,priority);
+
+    return details;
 }
 
 const  displayProject = (project, board) => {
@@ -318,12 +352,18 @@ const TodoList = (manager) => {
             //all button
             board.textContent = "";
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            const title = document.createElement('p');
-            title.className = "all";
-            title.textContent = "Todos";
+            const header = document.createElement("header");
+            header.className = "project";
+            header.setAttribute("projectIndex","all");
+
+            const projectTitle = document.createElement('p');
+            projectTitle.className = "title";
+            projectTitle.textContent = "ALL";
+
             const allTodos = manager.getAllTodos();
             const allTodosUl = displayProjectTodos(allTodos);
-            board.append(title,allTodosUl);
+            header.appendChild(projectTitle);
+            board.append(header,allTodosUl);
 
         }else if(target.matches(".manager.add")){
             //add button
@@ -398,11 +438,33 @@ const TodoList = (manager) => {
             const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
             title.textContent = input.value;
         }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
+            //get todos
+            const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+            let todos;
+            if(projectIndex === "all"){
+                todos = manager.getAllTodos();
+            }else {
+                todos = projects[projectIndex].getTodos();
+            }
+            
+            //reset the expanded details todo
             const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
             if(expandedTodo){
                 expandedTodo.classList.remove("expand");
+                const expandedTodoIndex = expandedTodo.getAttribute("todoIndex");
+                const detail = displayTodo(todos[expandedTodoIndex]);
+                const expandedWrapper = expandedTodo.querySelector(".wrapper");
+                expandedWrapper.replaceChild(detail, expandedWrapper.childNodes[0]);
             }
-            target.closest(".todo").classList.add("expand");
+            // add expanded detail of todo
+            if(target.closest(".todo")){
+                target.closest(".todo").classList.add("expand");
+                console.log(target.closest(".todo"));
+                const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+                const expandedDetail = displayExpandedTodo(todos[todoIndex]);
+                const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
+                wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
+            }
         }
     });
 
