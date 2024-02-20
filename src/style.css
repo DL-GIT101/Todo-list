@@ -27,7 +27,7 @@ body {
     border: 2px solid var(--color-accent);
 }
 
-.main > .sidebar {
+.main > .manager {
     display: grid;
     grid-template-rows: 40px 1fr 40px;
     border-right: 2px solid var(--color-secondary);
@@ -35,13 +35,18 @@ body {
     background-color: var(--color-secondary);
 }
 
-.main > .sidebar > .manager {
+.main > .manager >  *{
     font-size: 20px;
     background-color: var(--color-primary);
     border: none;
 }
 
-.main > .sidebar > .manager.list {
+.main > .manager >  button:hover{
+    cursor: pointer;
+    background-color: var(--color-accent);
+}
+
+.main > .manager > .project-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -52,39 +57,35 @@ body {
     overflow-y: auto;
 }
 
-.main > .sidebar > .manager > .project {
+.main > .manager > .project-list > .project {
     display: grid;
 }
 
-.main > .sidebar > .manager > .project > .wrapper{
+.main > .manager > .project-list > .project > .wrapper{
     display: grid;
     background-color: var(--color-primary);
 }
 
-.main > .sidebar > .manager > .project > .wrapper.clicked{
+.main > .manager > .project-list > .project > .wrapper.clicked{
     grid-template-columns: 1fr 50px;
 }
 
-.main > .sidebar > .manager > .project > .wrapper:hover {
+.main > .manager > .project-list > .project > .wrapper:hover {
     cursor: pointer;
     background-color: var(--color-accent);
 }
 
-.main > .sidebar > .manager > .project > .wrapper > .title-holder{
-    display: grid;
-}
-
-.main > .sidebar > .manager > .project > .wrapper > .title-holder >.title {
+.main > .manager > .project-list > .project > .wrapper >.title {
     margin: 0;
     place-self: center;
 }
 
-.main > .sidebar > button.manager:hover{
+.main > .manager > button.project-list:hover{
     cursor: pointer;
     background-color: var(--color-accent);
 }
 
-.main > .sidebar > .manager.clicked{
+.main > .manager > .project-list.clicked{
     grid-template-columns: 9fr 1fr;
 }
 
@@ -167,8 +168,8 @@ body {
     grid-template-rows: repeat(4, 25px);
     grid-template-areas: 
     "details . ."
-    "details edit delete"
-    "details edit delete"
+    "details first delete"
+    "details first delete"
     "details . .";
 }
 
@@ -177,7 +178,7 @@ body {
 }
 
 .main > .board > .todo-list > .todo.expand > .wrapper > .edit{
-    grid-area: edit;
+    grid-area: first;
 }
 
 .main > .board > .todo-list > .todo.expand > .wrapper > .delete{
@@ -188,4 +189,8 @@ body {
     grid-area: details;
     display: grid;
     grid-template-rows: repeat(auto-fill, 25px);
+}
+
+.main > .board > .todo-list > .todo.expand > .wrapper > .submit{
+    grid-area: first;
 }

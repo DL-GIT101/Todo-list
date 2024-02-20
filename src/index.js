@@ -128,6 +128,8 @@ import { createTODO } from './todo';
 //     displayProject("all");
 // }
 
+//doc creator
+
 const createButton = (name,text) => {
 
     const button = document.createElement("button");
@@ -143,34 +145,38 @@ const createDiv = (className) => {
     return div;
 }
 
-const displayProjectList = (manager) => {
+//todo doms creator
 
-    const projectListUl = document.createElement("UL");
-    projectListUl.className = "manager list";
+const createProjectLi = (project) => {
 
-    const projects = manager.getProjects();
-    projects.forEach((project, index) => {
+    const list = document.createElement("li");
+    list.className = "project";
 
-        const projectLi = document.createElement("li");
-        projectLi.className = "project";
-        projectLi.setAttribute("projectIndex",index);
+    const wrapper = createDiv("wrapper");
 
-        const projectWrapper = createDiv("wrapper");
+    const title = document.createElement('p');
+    title.className = "title";
+    title.textContent = project.getTitle();
 
-        const titleHolder = createDiv("title-holder");
+    wrapper.appendChild(title);
+    list.append(wrapper);
 
-        const title = document.createElement('p');
-        title.className = "title";
-        title.textContent = project.getTitle();
+    return list;
+}
 
-        titleHolder.appendChild(title)
-        projectWrapper.appendChild(titleHolder);
-        projectLi.append(projectWrapper);
+const createProjectList = (projectList) => {
 
-        projectListUl.appendChild(projectLi);
+    const projectListUL = document.createElement("UL");
+    projectListUL.className = "project-list";
+
+    projectList.forEach((project, index) => {
+
+        const list = createProjectLi(project);
+        list.setAttribute("index",index);
+        projectListUL.appendChild(list);
     });
 
-    return projectListUl;
+    return projectListUL;
 }
 
 const updateProjectList = (manager, container) => {
@@ -309,26 +315,6 @@ const editDetailsInput = (todo) => {
     return wrapper;
 }
 
-const  displayProject = (project, board) => {
-    board.textContent = '';
-
-    const titleProjectContainer = document.createElement("div");
-    titleProjectContainer.className = "title";
-
-    const titleProject = document.createElement('p');
-    titleProject.textContent = project.getTitle().toUpperCase();
-    titleProjectContainer.appendChild(titleProject);
-    board.append(titleProjectContainer);
-
-    const deleteButton = createButton("delete", "delete");
-    deleteButton.addEventListener("click", () => {
-        manager.deleteProject(project);
-        displayProjectList(manager);
-    });
-    titleProjectContainer.appendChild(deleteButton);
-
-}
-
 const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) => {
     const clickedList = document.querySelector(ListSelector);
     if(clickedList){
@@ -342,69 +328,67 @@ const resetClickedList = (ListSelector,elementToRemoveSelector,classNameAdded) =
 
 const TodoList = (manager) => {
 
+    //layout
     const body = document.querySelector('body');
-
     const main = document.createElement("container");
     main.className = "main";
-    
     const sidebar = document.createElement("aside");
-    sidebar.className = "sidebar";
-    
+    sidebar.className = "manager";
     const board = document.createElement("section");
     board.className = "board";
     main.append(sidebar,board);
     body.append(main);
 
+    const projects = manager.getProjects();
+
     //sidebar
-
-    const managerAllTodosBtn = createButton("manager all","All");
-    sidebar.appendChild(managerAllTodosBtn);
-
-    const projectList = displayProjectList(manager);
-    sidebar.appendChild(projectList);
-
-    const managerAddProjectBtn = createButton("manager add", "+");
-    sidebar.appendChild(managerAddProjectBtn);
+        //all todos button
+    const allTodosButton = createButton("all-todos","All");
+        ///project list
+    const projectList = createProjectList(projects);
+        // add project button
+    const addProjectButton = createButton("add-project", "+");
+    sidebar.append(allTodosButton,projectList,addProjectButton);
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
-        const projects = manager.getProjects();
+        console.log(target);
 
-        if(target.matches(".manager.all")){
-            //all button
-            board.textContent = "";
-            resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            const header = document.createElement("header");
-            header.className = "project";
-            header.setAttribute("projectIndex","all");
+        if(target.matches(".all-todos")){
+            // //all button
+            // board.textContent = "";
+            // resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
+            // const header = document.createElement("header");
+            // header.className = "project";
+            // header.setAttribute("projectIndex","all");
 
-            const projectTitle = document.createElement('p');
-            projectTitle.className = "title";
-            projectTitle.textContent = "ALL";
+            // const projectTitle = document.createElement('p');
+            // projectTitle.className = "title";
+            // projectTitle.textContent = "ALL";
 
-            const allTodos = manager.getAllTodos();
-            const allTodosUl = displayProjectTodos(allTodos);
-            header.appendChild(projectTitle);
-            board.append(header,allTodosUl);
+            // const allTodos = manager.getAllTodos();
+            // const allTodosUl = displayProjectTodos(allTodos);
+            // header.appendChild(projectTitle);
+            // board.append(header,allTodosUl);
 
         }else if(target.matches(".manager.add")){
-            //add button
-            const newProject = createProject("New");
-            manager.addProject(newProject);
-            updateProjectList(manager,sidebar);
-            //add delete button to latest project
-            const lastProjectLi = sidebar.childNodes[1].lastElementChild;
-            const wrapper = lastProjectLi.childNodes[0];
-            wrapper.classList.add("clicked");
-            const deleteButton = createButton("delete", "delete");
-            wrapper.appendChild(deleteButton);
-            const projectIndex = lastProjectLi.getAttribute("projectIndex");
-            //display the projectTitle
-            const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
-            board.textContent = "";
-            board.appendChild(projectTitle);
+            // //add button
+            // const newProject = createProject("New");
+            // manager.addProject(newProject);
+            // updateProjectList(manager,sidebar);
+            // //add delete button to latest project
+            // const lastProjectLi = sidebar.childNodes[1].lastElementChild;
+            // const wrapper = lastProjectLi.childNodes[0];
+            // wrapper.classList.add("clicked");
+            // const deleteButton = createButton("delete", "delete");
+            // wrapper.appendChild(deleteButton);
+            // const projectIndex = lastProjectLi.getAttribute("projectIndex");
+            // //display the projectTitle
+            // const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
+            // board.textContent = "";
+            // board.appendChild(projectTitle);
 
-        }else if(target.closest(".title-holder")){
+        }else if(target.closest(".title")){
             //append delete button
             resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
             target.closest(".wrapper").classList.add("clicked");
@@ -425,102 +409,101 @@ const TodoList = (manager) => {
         }
     });
 
-    board.addEventListener("click", (event) => {
-        const target = event.target;
-        console.log(target);
-        const projects = manager.getProjects();
+    // board.addEventListener("click", (event) => {
+    //     const target = event.target;
+    //     console.log(target);
+    //     const projects = manager.getProjects();
 
-        if(target.matches(".board > .project > .rename")){
-            //get current project obj
-            const header = target.closest(".project");
-            const currentProject = projects[header.getAttribute("projectIndex")];
-            //create input 
-            const input = document.createElement("input");
-            input.type = "text";
-            input.id = "projectTitle";
-            input.value = currentProject.getTitle();
-            header.replaceChild(input, header.childNodes[0]);
-            //add submit button
-            const okButton = createButton("submit", "ok");
-            header.replaceChild(okButton,header.childNodes[1]);
-        }else if(target.matches(".board > .project > .submit")){
-            //get input value
-            const header = target.closest(".project");
-            const projectIndex = header.getAttribute("projectIndex");
-            const currentProject = projects[projectIndex];
-            const input = header.childNodes[0];
-            //ser input value
-            currentProject.setTitle(input.value);
-            //update the title
-            const projectTitle = displayProjectTitle(currentProject,projectIndex);
-            board.textContent = "";
-            const projectTodos = displayProjectTodos(currentProject.getTodos());
-            board.append(projectTitle,projectTodos);
-            //update title in sidebar
-            const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
-            const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
-            title.textContent = input.value;
-        }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
-            //get todos
-            const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
-            let todos;
-            if(projectIndex === "all"){
-                todos = manager.getAllTodos();
-            }else {
-                todos = projects[projectIndex].getTodos();
-            }
+    //     if(target.matches(".board > .project > .rename")){
+    //         //get current project obj
+    //         const header = target.closest(".project");
+    //         const currentProject = projects[header.getAttribute("projectIndex")];
+    //         //create input 
+    //         const input = document.createElement("input");
+    //         input.type = "text";
+    //         input.id = "projectTitle";
+    //         input.value = currentProject.getTitle();
+    //         header.replaceChild(input, header.childNodes[0]);
+    //         //add submit button
+    //         const okButton = createButton("submit", "ok");
+    //         header.replaceChild(okButton,header.childNodes[1]);
+    //     }else if(target.matches(".board > .project > .submit")){
+    //         //get input value
+    //         const header = target.closest(".project");
+    //         const projectIndex = header.getAttribute("projectIndex");
+    //         const currentProject = projects[projectIndex];
+    //         const input = header.childNodes[0];
+    //         //ser input value
+    //         currentProject.setTitle(input.value);
+    //         //update the title
+    //         const projectTitle = displayProjectTitle(currentProject,projectIndex);
+    //         board.textContent = "";
+    //         const projectTodos = displayProjectTodos(currentProject.getTodos());
+    //         board.append(projectTitle,projectTodos);
+    //         //update title in sidebar
+    //         const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
+    //         const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
+    //         title.textContent = input.value;
+    //     }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
+    //         //get todos
+    //         const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+    //         let todos;
+    //         if(projectIndex === "all"){
+    //             todos = manager.getAllTodos();
+    //         }else {
+    //             todos = projects[projectIndex].getTodos();
+    //         }
             
-            //reset the expanded details todo
-            const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
-            if(expandedTodo){
-                expandedTodo.classList.remove("expand");
-                const expandedTodoIndex = expandedTodo.getAttribute("todoIndex");
-                const detail = displayTodo(todos[expandedTodoIndex]);
-                const expandedWrapper = expandedTodo.querySelector(".wrapper");
-                expandedWrapper.replaceChild(detail, expandedWrapper.childNodes[0]);
-            }
-            // add expanded detail of todo
-            if(target.closest(".todo")){
-                target.closest(".todo").classList.add("expand");
-                console.log(target.closest(".todo"));
-                const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-                const expandedDetail = displayExpandedTodo(todos[todoIndex]);
-                const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
-                wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
-            }
-        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .edit")){
-            const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
-            let  todos = projects[projectIndex].getTodos();
-            const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-            const todo = todos[todoIndex];
-            const todoList = target.closest(".todo");
-            if(todoList){
-                todoList.classList.add("expand");
-            }
+    //         //reset the expanded details todo
+    //         const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
+    //         if(expandedTodo){
+    //             expandedTodo.classList.remove("expand");
+    //             const expandedTodoIndex = expandedTodo.getAttribute("todoIndex");
+    //             const detail = displayTodo(todos[expandedTodoIndex]);
+    //             const expandedWrapper = expandedTodo.querySelector(".wrapper");
+    //             expandedWrapper.replaceChild(detail, expandedWrapper.childNodes[0]);
+    //         }
+    //         // add expanded detail of todo
+    //         if(target.closest(".todo")){
+    //             target.closest(".todo").classList.add("expand");
+    //             console.log(target.closest(".todo"));
+    //             const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+    //             const expandedDetail = displayExpandedTodo(todos[todoIndex]);
+    //             const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
+    //             wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
+    //         }
+    //     }else if(target.matches(".board > .todo-list > .todo > .wrapper > .edit")){
+    //         const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+    //         let  todos = projects[projectIndex].getTodos();
+    //         const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+    //         const todo = todos[todoIndex];
+    //         const todoList = target.closest(".todo");
+    //         if(todoList){
+    //             todoList.classList.add("expand");
+    //         }
 
-            const detailsInput = editDetailsInput(todo);
-            todoList.replaceChild(detailsInput,todoList.childNodes[0]);
-        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
-            const project = board.querySelector(".project");
-            const projectIndex = project.getAttribute("projectIndex");
-            let  todos = projects[projectIndex].getTodos();
-            const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-            const todo = todos[todoIndex];
+    //         const detailsInput = editDetailsInput(todo);
+    //         todoList.replaceChild(detailsInput,todoList.childNodes[0]);
+    //     }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
+    //         const project = board.querySelector(".project");
+    //         const projectIndex = project.getAttribute("projectIndex");
+    //         let  todos = projects[projectIndex].getTodos();
+    //         const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+    //         const todo = todos[todoIndex];
 
-            const todoList = target.closest(".todo");
-            const details = todoList.childNodes[0].childNodes[0];
+    //         const todoList = target.closest(".todo");
+    //         const wrapper = todoList.childNodes[0];
+    //         const details = wrapper.childNodes[0];
 
-            todo.setTitle(details.childNodes[0].value);
-            todo.setDescription(details.childNodes[1].value);
-            todo.setDueDate(details.childNodes[2].value);
-            todo.setPriority(details.childNodes[3].value);
+    //         todo.setTitle(details.childNodes[0].value);
+    //         todo.setDescription(details.childNodes[1].value);
+    //         todo.setDueDate(details.childNodes[2].value);
+    //         todo.setPriority(details.childNodes[3].value);
 
-            const projectTodoUL = displayProjectTodos(projects[projectIndex].getTodos());
-            board.replaceChild(projectTodoUL, board.childNodes[1]);
-            const expandedDetail = displayExpandedTodo(todo);
-            todoList.replaceChild(expandedDetail,todoList.childNodes[0]);
-        }
-    });
+    //         const expandedDetail = displayExpandedTodo(todo);
+    //         wrapper.replaceChild(expandedDetail,wrapper.childNodes[0]);
+    //     }
+    // });
 
 }   
 
