@@ -167,6 +167,20 @@ const createProjectLi = (project) => {
     return list;
 }
 
+const createCurrentProjectLi = (project) => {
+
+    const projectLi = createProjectLi(project);
+
+    projectLi.classList.add("current");
+    const wrapper = projectLi.childNodes[0];
+    
+    const deleteButton = createButton("delete","delete");
+
+    wrapper.appendChild(deleteButton);
+
+    return projectLi;
+}
+
 const createProjectList = (projectList) => {
 
     const projectListUL = document.createElement("UL");
@@ -180,23 +194,6 @@ const createProjectList = (projectList) => {
     });
 
     return projectListUL;
-}
-
-const createCurrentProjectLi = (projectLi) => {
-
-    projectLi.classList.add("current");
-    const wrapper = projectLi.childNodes[0];
-    
-    const deleteButton = createButton("delete","delete");
-
-    wrapper.appendChild(deleteButton);
-
-    return projectLi;
-}
-
-const updateProjectList = (manager, container) => {
-    const newProjectList = displayProjectList(manager);
-    container.replaceChild(newProjectList, container.childNodes[1]);
 }
 
 const displayProjectTitle = (project, index) => {
@@ -375,40 +372,31 @@ const TodoList = (manager) => {
             // header.appendChild(projectTitle);
             // board.append(header,allTodosUl);
 
-        }else if(target.matches(".manager.add")){
-            // //add button
-            // const newProject = createProject("New");
-            // manager.addProject(newProject);
-            // updateProjectList(manager,sidebar);
-            // //add delete button to latest project
-            // const lastProjectLi = sidebar.childNodes[1].lastElementChild;
-            // const wrapper = lastProjectLi.childNodes[0];
-            // wrapper.classList.add("clicked");
-            // const deleteButton = createButton("delete", "delete");
-            // wrapper.appendChild(deleteButton);
-            // const projectIndex = lastProjectLi.getAttribute("projectIndex");
+        }else if(target.matches(".add-project")){ // add project button
+            //add new project then dispaly it current
+            const newProject = createProject("New");
+            manager.addProject(newProject);
+            const updatedProjectList = createProjectList(projects);
+            const currenProjectLi = createCurrentProjectLi(projects[projects.length-1]);
+            currenProjectLi.setAttribute("index", projects.length-1);
+            updatedProjectList.replaceChild(currenProjectLi, updatedProjectList.lastChild);
+            sidebar.replaceChild(updatedProjectList,sidebar.childNodes[1]);
+           
             // //display the projectTitle
             // const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
             // board.textContent = "";
             // board.appendChild(projectTitle);
 
         }else if(target.closest(".title-holder")){ //project List
+            const clickedProjectLiIndex = target.closest(".project").getAttribute("index");
             //if clicked project was current
             if(!target.closest(".project.current")){
-                //remove previous current project
-                const previousCurrentProjectLi = sidebar.querySelector(".project-list > .project.current");
-                if(previousCurrentProjectLi){
-                    const previousCurrentProjectLiIndex = previousCurrentProjectLi.getAttribute("index");
-                    const previousProjectLi = createProjectLi(projects[previousCurrentProjectLiIndex]);
-                    previousProjectLi.setAttribute("index", previousCurrentProjectLiIndex);
-                    projectList.replaceChild(previousProjectLi, projectList.childNodes[previousCurrentProjectLiIndex]);
-                }
+                const updatedProjectList = createProjectList(projects);
                 //append delete button
-                const clickedProjectLi = target.closest(".project");
-                const clickedProjectLiIndex = clickedProjectLi.getAttribute("index");
-                const currenProjectLi = createCurrentProjectLi(clickedProjectLi);
+                const currenProjectLi = createCurrentProjectLi(projects[clickedProjectLiIndex]);
                 currenProjectLi.setAttribute("index", clickedProjectLiIndex);
-                projectList.replaceChild(currenProjectLi, projectList.childNodes[clickedProjectLiIndex]);
+                updatedProjectList.replaceChild(currenProjectLi, updatedProjectList.childNodes[clickedProjectLiIndex]);
+                sidebar.replaceChild(updatedProjectList,sidebar.childNodes[1]);
             }
             
             //append project title on board
