@@ -195,100 +195,6 @@ const createProjectList = (projectList) => {
     return projectListUL;
 }
 
-const displayProjectTitle = (project) => {
-
-    const header = document.createElement("header");
-    header.className = "title-holder";
-
-    const projectTitle = document.createElement('p');
-    projectTitle.className = "title";
-    let renameButton = createButton("rename", "rename");
-
-    if(project === "all"){
-        projectTitle.textContent = "ALL";
-        renameButton = "";
-    }else{
-        projectTitle.textContent = project.getTitle().toUpperCase();
-    }
-   
-    header.append(projectTitle, renameButton);
-
-    return header;
-}
-
-const displayProjectTodos = (todos) => {
-
-    const todoUl = document.createElement("UL");
-    todoUl.className = "todo-list";
-
-    todos.forEach((todo, index) => {
-
-        const todoLi = document.createElement("li");
-        todoLi.className = "todo";
-        todoLi.setAttribute("todoIndex",index);
-
-        const todoWrapper = createDiv("wrapper");
-
-        const details = displayTodo(todo);
-
-        const editButton = createButton("edit","edit");
-        const deleteButton = createButton("delete", "delete");
-        todoWrapper.append(details,editButton,deleteButton);
-        todoLi.appendChild(todoWrapper);
-        todoUl.appendChild(todoLi);
-    });
-
-    return todoUl;
-}
-
-const displayTodo = (todo) => {
-
-    const details = createDiv("details");
-
-    const title = document.createElement("p");
-    title.className = "title";
-    title.textContent = todo.getTitle();
-
-    const dueDate = document.createElement("p");
-    dueDate.className = "dueDate";
-    dueDate.textContent = todo.getDueDate();
-
-    //style depending on piority
-    details.classList.add((todo.getPriority()).toLowerCase());
-
-    details.append(title,dueDate);
-
-    return details;
-}
-
-const displayExpandedTodo = (todo) => {
-
-    const details = createDiv("details");
-
-    const title = document.createElement("p");
-    title.className = "title";
-    title.textContent = todo.getTitle();
-
-    const description = document.createElement("p");
-    description.className = "description";
-    description.textContent = todo.getDescription();
-
-    const dueDate = document.createElement("p");
-    dueDate.className = "dueDate";
-    dueDate.textContent = todo.getDueDate();
-
-    const priority = document.createElement("p");
-    priority.className = "priority";
-    priority.textContent = todo.getPriority();
-
-    //style depending on piority
-    details.classList.add((todo.getPriority()).toLowerCase());
-
-    details.append(title,description,dueDate,priority);
-
-    return details;
-}
-
 const editDetailsInput = (todo) => {
 
     const wrapper = createDiv("wrapper");
@@ -330,13 +236,105 @@ const editDetailsInput = (todo) => {
     return wrapper;
 }
 
+const displayExpandedTodo = (todo) => {
+
+    const details = createDiv("details");
+
+    const title = document.createElement("p");
+    title.className = "title";
+    title.textContent = todo.getTitle();
+
+    const description = document.createElement("p");
+    description.className = "description";
+    description.textContent = todo.getDescription();
+
+    const dueDate = document.createElement("p");
+    dueDate.className = "dueDate";
+    dueDate.textContent = todo.getDueDate();
+
+    const priority = document.createElement("p");
+    priority.className = "priority";
+    priority.textContent = todo.getPriority();
+
+    //style depending on piority
+    details.classList.add((todo.getPriority()).toLowerCase());
+
+    details.append(title,description,dueDate,priority);
+
+    return details;
+}
+
+const createTodoLi = (todo) => {
+
+    const todoLi = document.createElement("li");
+    todoLi.className = "todo";
+
+    const wrapper = createDiv("wrapper");
+
+    const details = createDiv("details");
+
+    const title = document.createElement("p");
+    title.className = "title";
+    title.textContent = todo.getTitle();
+
+    const dueDate = document.createElement("p");
+    dueDate.className = "dueDate";
+    dueDate.textContent = todo.getDueDate();
+
+    //style depending on piority
+    todoLi.classList.add((todo.getPriority()).toLowerCase());
+
+    details.append(title,dueDate);
+
+    const editButton = createButton("edit","edit");
+    const deleteButton = createButton("delete", "delete");
+    
+    wrapper.append(details,editButton,deleteButton);
+    todoLi.appendChild(wrapper);
+
+    return todoLi;
+}
+
+const createProjectTodoList = (todos) => {
+
+    const todoUl = document.createElement("UL");
+    todoUl.className = "todo-list";
+
+    todos.forEach( todo => {
+
+        const todoLi = createTodoLi(todo);
+        todoUl.appendChild(todoLi);
+    });
+
+    return todoUl;
+}
+
+const createProjectTitle = (project) => {
+
+    const header = document.createElement("header");
+    header.className = "title-holder";
+
+    const projectTitle = document.createElement('p');
+    projectTitle.className = "title";
+    projectTitle.textContent = project.getTitle().toUpperCase();
+    
+    const renameButton = createButton("rename", "rename");
+    
+    header.append(projectTitle, renameButton);
+
+    return header;
+}
+
 const createProjectDetails = (project) => {
+
     const projectContainer = document.createElement("container");
     projectContainer.className = "project-details";
 
-    const projectTitle = displayProjectTitle(project);
+    const projectTitle = createProjectTitle(project);
 
-    projectContainer.append(projectTitle);
+    const projectUL = createProjectTodoList(project.getTodos());
+
+    projectContainer.append(projectTitle,projectUL);
 
     return projectContainer;
 }
@@ -378,7 +376,18 @@ const TodoList = (manager) => {
             projectList = createProjectList(projects);
             sidebar.replaceChild(projectList,sidebar.childNodes[1]);
 
-            const projectDetails = createProjectDetails("all");
+            const allTodos = manager.getAllTodos();
+            const allTodoProject = createProject("All");
+
+            allTodos.forEach(todo => {
+                allTodoProject.addTodo(todo);
+            });
+
+            const projectDetails = createProjectDetails(allTodoProject);
+            //remove edit title button
+            const titleHolder = projectDetails.childNodes[0];
+            titleHolder.removeChild(titleHolder.lastChild);
+            
             if(!board.hasChildNodes()){
                 board.appendChild(projectDetails);
             }else{
