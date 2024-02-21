@@ -145,7 +145,6 @@ body {
 
 .main > .board > .project-details > .todo-list > .todo > .wrapper{
     display: grid;
-    grid-template-columns: 8fr 1fr 1fr;
 }
 
 .main > .board > .project-details > .todo-list > .todo > .wrapper > .details{
@@ -154,7 +153,7 @@ body {
     padding-left: 5px;
 }
 
-.main > .board > .project-details > .todo-list > .todo > .wrapper > .details:hover{
+.main > .board > .project-details > .todo-list > .todo:hover{
     background-color: var(--color-background);
     cursor: pointer;
 }
@@ -163,11 +162,16 @@ body {
    margin: 0;
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand {
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+}
+
+.main > .board > .project-details > .todo-list > .todo.current {
     grid-row: span 2;
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper{
     grid-template-rows: repeat(4, 25px);
     grid-template-areas: 
     "details . ."
@@ -176,24 +180,24 @@ body {
     "details . .";
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .details{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .details{
     grid-area: details;
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .edit{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .edit{
     grid-area: first;
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .delete{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .delete{
     grid-area: delete;
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .edit-details{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .edit-details{
     grid-area: details;
     display: grid;
     grid-template-rows: repeat(auto-fill, 25px);
 }
 
-.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .submit{
+.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .submit{
     grid-area: first;
 }
