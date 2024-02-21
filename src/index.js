@@ -372,18 +372,17 @@ const TodoList = (manager) => {
         console.log(target);
 
         if(target.matches(".all-todos")){ // all todo button
-            //delete button on projects
+            //delete button on when clicked
             projectList = createProjectList(projects);
             sidebar.replaceChild(projectList,sidebar.childNodes[1]);
-
+            //separate project for all todos
             const allTodos = manager.getAllTodos();
-            const allTodoProject = createProject("All");
-
+            const currentProject = createProject("All");
             allTodos.forEach(todo => {
-                allTodoProject.addTodo(todo);
+                currentProject.addTodo(todo);
             });
 
-            const projectDetails = createProjectDetails(allTodoProject);
+            const projectDetails = createProjectDetails(currentProject);
             //remove edit title button
             const titleHolder = projectDetails.childNodes[0];
             titleHolder.removeChild(titleHolder.lastChild);
@@ -393,12 +392,6 @@ const TodoList = (manager) => {
             }else{
                 board.replaceChild(projectDetails, board.childNodes[0]);
             }
-
-
-            // const allTodos = manager.getAllTodos();
-            // const allTodosUl = displayProjectTodos(allTodos);
-            // header.appendChild(projectTitle);
-            // board.append(header,allTodosUl);
 
         }else if(target.matches(".add-project")){ // add project button
             //add new project then dispaly it current
@@ -437,10 +430,6 @@ const TodoList = (manager) => {
             }else{
                 board.replaceChild(projectDetails, board.childNodes[0]);
             }
-
-            // const projectTodos = displayProjectTodos(projects[projectIndex].getTodos());
-            // board.textContent = "";
-            // board.append(projectTitle,projectTodos);
 
         }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
             //delete a project
