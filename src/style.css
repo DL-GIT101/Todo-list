@@ -128,11 +128,23 @@ body {
 
 .main > .board > .project-details > .todo-list > .todo {
     display: grid;
+    background-color: var(--color-primary);
+}
+
+.main > .board > .project-details > .todo-list > .todo.low{
+    border-left: 5px solid green;
+}
+
+.main > .board > .project-details > .todo-list > .todo.medium{
+    border-left: 5px solid orange;
+}
+
+.main > .board > .project-details > .todo-list > .todo.high{
+    border-left: 5px solid red;
 }
 
 .main > .board > .project-details > .todo-list > .todo > .wrapper{
     display: grid;
-    background-color: var(--color-accent);
     grid-template-columns: 8fr 1fr 1fr;
 }
 
@@ -142,20 +154,8 @@ body {
     padding-left: 5px;
 }
 
-.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.low{
-    border-left: 5px solid green;
-}
-
-.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.medium{
-    border-left: 5px solid orange;
-}
-
-.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.high{
-    border-left: 5px solid red;
-}
-
 .main > .board > .project-details > .todo-list > .todo > .wrapper > .details:hover{
-    background-color: var(--color-secondary);
+    background-color: var(--color-background);
     cursor: pointer;
 }
 
