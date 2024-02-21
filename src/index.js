@@ -186,28 +186,31 @@ const createProjectList = (projectList) => {
     const projectListUL = document.createElement("UL");
     projectListUL.className = "project-list";
 
-    projectList.forEach((project, index) => {
+    projectList.forEach(project => {
 
         const list = createProjectLi(project);
-        list.setAttribute("index",index);
         projectListUL.appendChild(list);
     });
 
     return projectListUL;
 }
 
-const displayProjectTitle = (project, index) => {
+const displayProjectTitle = (project) => {
 
     const header = document.createElement("header");
-    header.className = "project";
-    header.setAttribute("projectIndex",index);
+    header.className = "title-holder";
 
     const projectTitle = document.createElement('p');
     projectTitle.className = "title";
-    projectTitle.textContent = project.getTitle().toUpperCase();
+    let renameButton = createButton("rename", "rename");
 
-    const renameButton = createButton("rename", "rename");
-
+    if(project === "all"){
+        projectTitle.textContent = "ALL";
+        renameButton = "";
+    }else{
+        projectTitle.textContent = project.getTitle().toUpperCase();
+    }
+   
     header.append(projectTitle, renameButton);
 
     return header;
@@ -327,6 +330,17 @@ const editDetailsInput = (todo) => {
     return wrapper;
 }
 
+const createProjectDetails = (project) => {
+    const projectContainer = document.createElement("container");
+    projectContainer.className = "project-details";
+
+    const projectTitle = displayProjectTitle(project);
+
+    projectContainer.append(projectTitle);
+
+    return projectContainer;
+}
+
 const TodoList = (manager) => {
 
     //layout
@@ -346,26 +360,31 @@ const TodoList = (manager) => {
         //all todos button
     const allTodosButton = createButton("all-todos","All");
         ///project list
-    const projectList = createProjectList(projects);
+    let projectList = createProjectList(projects);
         // add project button
     const addProjectButton = createButton("add-project", "+");
     sidebar.append(allTodosButton,projectList,addProjectButton);
+
+    let currentProjectIndex;
+    let currentProject;
+    let currentTodoIndex;
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
         console.log(target);
 
-        if(target.matches(".all-todos")){
-            // //all button
-            // board.textContent = "";
-            // resetClickedList(".manager > .project > .wrapper.clicked",".delete","clicked");
-            // const header = document.createElement("header");
-            // header.className = "project";
-            // header.setAttribute("projectIndex","all");
+        if(target.matches(".all-todos")){ // all todo button
+            //delete button on projects
+            projectList = createProjectList(projects);
+            sidebar.replaceChild(projectList,sidebar.childNodes[1]);
 
-            // const projectTitle = document.createElement('p');
-            // projectTitle.className = "title";
-            // projectTitle.textContent = "ALL";
+            const projectDetails = createProjectDetails("all");
+            if(!board.hasChildNodes()){
+                board.appendChild(projectDetails);
+            }else{
+                board.replaceChild(projectDetails, board.childNodes[0]);
+            }
+
 
             // const allTodos = manager.getAllTodos();
             // const allTodosUl = displayProjectTodos(allTodos);
@@ -376,32 +395,40 @@ const TodoList = (manager) => {
             //add new project then dispaly it current
             const newProject = createProject("New");
             manager.addProject(newProject);
-            const updatedProjectList = createProjectList(projects);
-            const currenProjectLi = createCurrentProjectLi(projects[projects.length-1]);
-            currenProjectLi.setAttribute("index", projects.length-1);
-            updatedProjectList.replaceChild(currenProjectLi, updatedProjectList.lastChild);
-            sidebar.replaceChild(updatedProjectList,sidebar.childNodes[1]);
-           
-            // //display the projectTitle
-            // const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
-            // board.textContent = "";
-            // board.appendChild(projectTitle);
+            currentProjectIndex = projects.length - 1;
+            projectList = createProjectList(projects);
+            const currenProjectLi = createCurrentProjectLi(projects[currentProjectIndex]);
+            projectList.replaceChild(currenProjectLi, projectList.lastChild);
+            sidebar.replaceChild(projectList,sidebar.childNodes[1]);
+
+            currentProject = projects[currentProjectIndex];
+            const projectDetails = createProjectDetails(currentProject);
+            if(!board.hasChildNodes()){
+                board.appendChild(projectDetails);
+            }else{
+                board.replaceChild(projectDetails, board.childNodes[0]);
+            }
 
         }else if(target.closest(".title-holder")){ //project List
-            const clickedProjectLiIndex = target.closest(".project").getAttribute("index");
+            const projectListArray = [...projectList.childNodes];
+            currentProjectIndex = projectListArray.indexOf(target.closest(".project"));
             //if clicked project was current
             if(!target.closest(".project.current")){
-                const updatedProjectList = createProjectList(projects);
+                projectList = createProjectList(projects);
                 //append delete button
-                const currenProjectLi = createCurrentProjectLi(projects[clickedProjectLiIndex]);
-                currenProjectLi.setAttribute("index", clickedProjectLiIndex);
-                updatedProjectList.replaceChild(currenProjectLi, updatedProjectList.childNodes[clickedProjectLiIndex]);
-                sidebar.replaceChild(updatedProjectList,sidebar.childNodes[1]);
+                const currenProjectLi = createCurrentProjectLi(projects[currentProjectIndex]);
+                projectList.replaceChild(currenProjectLi, projectList.childNodes[currentProjectIndex]);
+                sidebar.replaceChild(projectList,sidebar.childNodes[1]);
             }
-            
-            //append project title on board
-            // const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            // const projectTitle = displayProjectTitle(projects[projectIndex],projectIndex);
+
+            currentProject = projects[currentProjectIndex];
+            const projectDetails = createProjectDetails(currentProject);
+            if(!board.hasChildNodes()){
+                board.appendChild(projectDetails);
+            }else{
+                board.replaceChild(projectDetails, board.childNodes[0]);
+            }
+
             // const projectTodos = displayProjectTodos(projects[projectIndex].getTodos());
             // board.textContent = "";
             // board.append(projectTitle,projectTodos);
