@@ -95,29 +95,28 @@ body {
 
 .main > .board {
     display: grid;
-    grid-template-rows: 40px 1fr 40px;
+    background-color: var(--color-accent);
+}
+
+.main > .board > .project-details{
+    display: grid;
+    grid-template-rows: 50px 1fr 50px;
     row-gap: 5px;
-    background-color: var(--color-background);
 }
 
-.main > .board > .all{
-   margin: 0;
-   place-self: center;
-}
-
-.main > .board > .project{
+.main > .board > .project-details > .title-holder{
     display: grid;
     grid-template-columns: 9fr 1fr;
 }
 
-.main > .board > .project > .title{
+.main > .board > .project-details > .title-holder > .title{
     margin: 0;
     margin-left: 5px;
     padding: 5px;
     place-self: center;
 }
 
-.main > .board > .todo-list {
+.main > .board > .project-details > .todo-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
@@ -127,48 +126,48 @@ body {
     overflow-y: auto;
 }
 
-.main > .board > .todo-list > .todo {
+.main > .board > .project-details > .todo-list > .todo {
     display: grid;
 }
 
-.main > .board > .todo-list > .todo > .wrapper{
+.main > .board > .project-details > .todo-list > .todo > .wrapper{
     display: grid;
     background-color: var(--color-accent);
     grid-template-columns: 8fr 1fr 1fr;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details{
     display: grid;
     grid-template-rows: repeat(auto-fill, 25px);
     padding-left: 5px;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details.low{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.low{
     border-left: 5px solid green;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details.medium{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.medium{
     border-left: 5px solid orange;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details.high{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details.high{
     border-left: 5px solid red;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details:hover{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details:hover{
     background-color: var(--color-secondary);
     cursor: pointer;
 }
 
-.main > .board > .todo-list > .todo > .wrapper > .details > p{
+.main > .board > .project-details > .todo-list > .todo > .wrapper > .details > p{
    margin: 0;
 }
 
-.main > .board > .todo-list > .todo.expand {
+.main > .board > .project-details > .todo-list > .todo.expand {
     grid-row: span 2;
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper{
     grid-template-rows: repeat(4, 25px);
     grid-template-areas: 
     "details . ."
@@ -177,24 +176,24 @@ body {
     "details . .";
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper > .details{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .details{
     grid-area: details;
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper > .edit{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .edit{
     grid-area: first;
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper > .delete{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .delete{
     grid-area: delete;
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper > .edit-details{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .edit-details{
     grid-area: details;
     display: grid;
     grid-template-rows: repeat(auto-fill, 25px);
 }
 
-.main > .board > .todo-list > .todo.expand > .wrapper > .submit{
+.main > .board > .project-details > .todo-list > .todo.expand > .wrapper > .submit{
     grid-area: first;
 }
