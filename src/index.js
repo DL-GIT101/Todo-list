@@ -309,6 +309,23 @@ const createProjectTodoList = (todos) => {
     return todoUl;
 }
 
+const createProjectTitleInput = (project) => {
+
+    const header = document.createElement("header");
+    header.className = "title-holder";
+
+    //create input 
+    const input = document.createElement("input");
+    input.type = "text";
+    input.id = "projectTitle";
+    input.value = project.getTitle();
+    //add submit button
+    const submitButton = createButton("submit", "submit");
+    header.append(input,submitButton);
+
+    return header;
+}
+
 const createProjectTitle = (project) => {
 
     const header = document.createElement("header");
@@ -369,7 +386,6 @@ const TodoList = (manager) => {
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
-        console.log(target);
 
         if(target.matches(".all-todos")){ // all todo button
             //delete button on when clicked
@@ -443,101 +459,95 @@ const TodoList = (manager) => {
         }
     });
 
-    // board.addEventListener("click", (event) => {
-    //     const target = event.target;
-    //     console.log(target);
-    //     const projects = manager.getProjects();
+    let projectDetails;
 
-    //     if(target.matches(".board > .project > .rename")){
-    //         //get current project obj
-    //         const header = target.closest(".project");
-    //         const currentProject = projects[header.getAttribute("projectIndex")];
-    //         //create input 
-    //         const input = document.createElement("input");
-    //         input.type = "text";
-    //         input.id = "projectTitle";
-    //         input.value = currentProject.getTitle();
-    //         header.replaceChild(input, header.childNodes[0]);
-    //         //add submit button
-    //         const okButton = createButton("submit", "ok");
-    //         header.replaceChild(okButton,header.childNodes[1]);
-    //     }else if(target.matches(".board > .project > .submit")){
-    //         //get input value
-    //         const header = target.closest(".project");
-    //         const projectIndex = header.getAttribute("projectIndex");
-    //         const currentProject = projects[projectIndex];
-    //         const input = header.childNodes[0];
-    //         //ser input value
-    //         currentProject.setTitle(input.value);
-    //         //update the title
-    //         const projectTitle = displayProjectTitle(currentProject,projectIndex);
-    //         board.textContent = "";
-    //         const projectTodos = displayProjectTodos(currentProject.getTodos());
-    //         board.append(projectTitle,projectTodos);
-    //         //update title in sidebar
-    //         const currentProjectLi = sidebar.childNodes[1].childNodes[projectIndex];
-    //         const title = currentProjectLi.childNodes[0].childNodes[0].childNodes[0];
-    //         title.textContent = input.value;
-    //     }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
-    //         //get todos
-    //         const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
-    //         let todos;
-    //         if(projectIndex === "all"){
-    //             todos = manager.getAllTodos();
-    //         }else {
-    //             todos = projects[projectIndex].getTodos();
-    //         }
+    board.addEventListener("click", (event) => {
+        const target = event.target;
+        
+        console.log(target);
+
+        if(target.matches(".board > .project-details > .title-holder >.rename")){ //rename button
+            //get project Container
+            projectDetails = target.closest(".project-details");
+            //create input and append
+            const titleInput = createProjectTitleInput(currentProject);
+            projectDetails.replaceChild(titleInput, projectDetails.firstElementChild);
             
-    //         //reset the expanded details todo
-    //         const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
-    //         if(expandedTodo){
-    //             expandedTodo.classList.remove("expand");
-    //             const expandedTodoIndex = expandedTodo.getAttribute("todoIndex");
-    //             const detail = displayTodo(todos[expandedTodoIndex]);
-    //             const expandedWrapper = expandedTodo.querySelector(".wrapper");
-    //             expandedWrapper.replaceChild(detail, expandedWrapper.childNodes[0]);
-    //         }
-    //         // add expanded detail of todo
-    //         if(target.closest(".todo")){
-    //             target.closest(".todo").classList.add("expand");
-    //             console.log(target.closest(".todo"));
-    //             const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-    //             const expandedDetail = displayExpandedTodo(todos[todoIndex]);
-    //             const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
-    //             wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
-    //         }
-    //     }else if(target.matches(".board > .todo-list > .todo > .wrapper > .edit")){
-    //         const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
-    //         let  todos = projects[projectIndex].getTodos();
-    //         const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-    //         const todo = todos[todoIndex];
-    //         const todoList = target.closest(".todo");
-    //         if(todoList){
-    //             todoList.classList.add("expand");
-    //         }
+        }else if(target.matches(".board > .project-details > .title-holder > .submit")){
+            //get input value
+            const inputTitle = projectDetails.childNodes[0].childNodes[0];
+            //set input value
+            currentProject.setTitle(inputTitle.value);
+            //update the project Details
+            projectDetails = createProjectDetails(currentProject);
+            board.replaceChild(projectDetails, board.childNodes[0]);
+            //update the project list
+            projectList = createProjectList(projects);
+            //append delete button
+            const currenProjectLi = createCurrentProjectLi(currentProject);
+            projectList.replaceChild(currenProjectLi, projectList.childNodes[currentProjectIndex]);
+            sidebar.replaceChild(projectList,sidebar.childNodes[1]);
 
-    //         const detailsInput = editDetailsInput(todo);
-    //         todoList.replaceChild(detailsInput,todoList.childNodes[0]);
-    //     }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
-    //         const project = board.querySelector(".project");
-    //         const projectIndex = project.getAttribute("projectIndex");
-    //         let  todos = projects[projectIndex].getTodos();
-    //         const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-    //         const todo = todos[todoIndex];
+        }else if(target.closest(".board > .todo-list > .todo > .wrapper > .details")){
+            // //get todos
+            // const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+            // let todos;
+            // if(projectIndex === "all"){
+            //     todos = manager.getAllTodos();
+            // }else {
+            //     todos = projects[projectIndex].getTodos();
+            // }
+            
+            // //reset the expanded details todo
+            // const expandedTodo = document.querySelector(".board > .todo-list > .todo.expand");
+            // if(expandedTodo){
+            //     expandedTodo.classList.remove("expand");
+            //     const expandedTodoIndex = expandedTodo.getAttribute("todoIndex");
+            //     const detail = displayTodo(todos[expandedTodoIndex]);
+            //     const expandedWrapper = expandedTodo.querySelector(".wrapper");
+            //     expandedWrapper.replaceChild(detail, expandedWrapper.childNodes[0]);
+            // }
+            // // add expanded detail of todo
+            // if(target.closest(".todo")){
+            //     target.closest(".todo").classList.add("expand");
+            //     console.log(target.closest(".todo"));
+            //     const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+            //     const expandedDetail = displayExpandedTodo(todos[todoIndex]);
+            //     const wrapper = target.closest(".board > .todo-list > .todo.expand > .wrapper");
+            //     wrapper.replaceChild(expandedDetail, wrapper.childNodes[0]);
+            // }
+        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .edit")){
+            // const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
+            // let  todos = projects[projectIndex].getTodos();
+            // const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+            // const todo = todos[todoIndex];
+            // const todoList = target.closest(".todo");
+            // if(todoList){
+            //     todoList.classList.add("expand");
+            // }
 
-    //         const todoList = target.closest(".todo");
-    //         const wrapper = todoList.childNodes[0];
-    //         const details = wrapper.childNodes[0];
+            // const detailsInput = editDetailsInput(todo);
+            // todoList.replaceChild(detailsInput,todoList.childNodes[0]);
+        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
+            // const project = board.querySelector(".project");
+            // const projectIndex = project.getAttribute("projectIndex");
+            // let  todos = projects[projectIndex].getTodos();
+            // const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
+            // const todo = todos[todoIndex];
 
-    //         todo.setTitle(details.childNodes[0].value);
-    //         todo.setDescription(details.childNodes[1].value);
-    //         todo.setDueDate(details.childNodes[2].value);
-    //         todo.setPriority(details.childNodes[3].value);
+            // const todoList = target.closest(".todo");
+            // const wrapper = todoList.childNodes[0];
+            // const details = wrapper.childNodes[0];
 
-    //         const expandedDetail = displayExpandedTodo(todo);
-    //         wrapper.replaceChild(expandedDetail,wrapper.childNodes[0]);
-    //     }
-    // });
+            // todo.setTitle(details.childNodes[0].value);
+            // todo.setDescription(details.childNodes[1].value);
+            // todo.setDueDate(details.childNodes[2].value);
+            // todo.setPriority(details.childNodes[3].value);
+
+            // const expandedDetail = displayExpandedTodo(todo);
+            // wrapper.replaceChild(expandedDetail,wrapper.childNodes[0]);
+        }
+    });
 
 }   
 
