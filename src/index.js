@@ -352,7 +352,7 @@ const TodoList = (manager) => {
     main.append(sidebar,board);
     body.append(main);
 
-    const projects = manager.getProjects();
+    let projects = manager.getProjects();
 
     //sidebar
         //all todos button
@@ -431,11 +431,15 @@ const TodoList = (manager) => {
                 board.replaceChild(projectDetails, board.childNodes[0]);
             }
 
-        }else if(target.matches(".manager > .project > .wrapper.clicked > .delete")){
+        }else if(target.matches(".manager > .project-list > .project.current > .wrapper > .delete")){ //delete button
             //delete a project
-            // const projectIndex = target.closest("li.project").getAttribute("projectIndex");
-            // manager.deleteProject(projects[projectIndex]);
-            // updateProjectList(manager,sidebar);
+            manager.deleteProject(currentProject);
+            //get new Project List
+            projects = manager.getProjects()
+            //append new projectList
+            projectList = createProjectList(projects);
+            sidebar.replaceChild(projectList,sidebar.childNodes[1]);
+            board.removeChild(board.firstElementChild);
         }
     });
 
