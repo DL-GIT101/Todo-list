@@ -195,10 +195,11 @@ const createProjectList = (projectList) => {
     return projectListUL;
 }
 
-const editDetailsInput = (todo) => {
+const createTodoInput = (todo) => {
 
+    const todoLi = createExpandedTodoLi(todo);
     const wrapper = createDiv("wrapper");
-    const detailsInputDiv = createDiv("edit-details");
+    const detailsInputDiv = createDiv("details");
 
     const titleInput = document.createElement("input");
     titleInput.setAttribute("type","text");
@@ -232,11 +233,14 @@ const editDetailsInput = (todo) => {
     detailsInputDiv.append(titleInput,descriptionInput,dueDateInput,priortySelect);
 
     const submitButton = createButton("submit","submit");
-    wrapper.append(detailsInputDiv,submitButton)
-    return wrapper;
+
+    wrapper.append(detailsInputDiv,submitButton);
+    todoLi.replaceChild(wrapper, todoLi.firstChild);
+    todoLi.classList.add("edit");
+    return todoLi;
 }
 
-const createExpandedTodo = (todo) => {
+const createExpandedTodoLi = (todo) => {
 
     const todoLi = createTodoLi(todo);
     const wrapper = todoLi.childNodes[0];
@@ -504,26 +508,16 @@ const TodoList = (manager) => {
             currentTodoIndex = todoListArray.indexOf(target.closest(".todo"));
             todos = currentProject.getTodos();
             currentTodo = todos[currentTodoIndex];
-            //create new todo list then append to proejct details
+            //create expanded todo list then append to project details
             todoList = createProjectTodoList(todos);
-            const expandedTodo = createExpandedTodo(currentTodo);
+            const expandedTodo = createExpandedTodoLi(currentTodo);
             todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
             projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
         
         }else if(target.matches(".project-details > .todo-list > .todo.current > .wrapper > .edit")){
-            console.log("edit");
+            const todoInput = createTodoInput(currentTodo);
+            todoList.replaceChild(todoInput,todoList.childNodes[currentTodoIndex]);
             
-            // const projectIndex = board.querySelector(".project").getAttribute("projectIndex");
-            // let  todos = projects[projectIndex].getTodos();
-            // const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-            // const todo = todos[todoIndex];
-            // const todoList = target.closest(".todo");
-            // if(todoList){
-            //     todoList.classList.add("expand");
-            // }
-
-            // const detailsInput = editDetailsInput(todo);
-            // todoList.replaceChild(detailsInput,todoList.childNodes[0]);
         }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
             // const project = board.querySelector(".project");
             // const projectIndex = project.getAttribute("projectIndex");
