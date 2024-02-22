@@ -180,15 +180,6 @@ body {
     "details . .";
 }
 
-.main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper{
-    grid-template-columns: 1fr 20px 60px 20px;
-    grid-template-areas: 
-    "details . . ."
-    "details . submit ."
-    "details . submit ."
-    "details . . .";
-}
-
 .main > .board > .project-details > .todo-list > .todo.current > .wrapper > .details{
     grid-area: details;
 }
@@ -201,6 +192,22 @@ body {
     grid-area: delete;
 }
 
-.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .submit{
+.main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper{
+    grid-template-columns: 1fr 20px 60px 20px;
+    grid-template-areas: 
+    "details . . ."
+    "details . submit ."
+    "details . submit ."
+    "details . . .";
+}
+
+.main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper > .edit-details{
+    grid-area: details;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 25px);
+    padding-left: 5px;
+}
+
+.main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper > .submit{
     grid-area: submit;
 }
