@@ -175,9 +175,18 @@ body {
     grid-template-rows: repeat(4, 25px);
     grid-template-areas: 
     "details . ."
-    "details first delete"
-    "details first delete"
+    "details edit delete"
+    "details edit delete"
     "details . .";
+}
+
+.main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper{
+    grid-template-columns: 1fr 20px 60px 20px;
+    grid-template-areas: 
+    "details . . ."
+    "details . submit ."
+    "details . submit ."
+    "details . . .";
 }
 
 .main > .board > .project-details > .todo-list > .todo.current > .wrapper > .details{
@@ -185,19 +194,13 @@ body {
 }
 
 .main > .board > .project-details > .todo-list > .todo.current > .wrapper > .edit{
-    grid-area: first;
+    grid-area: edit;
 }
 
 .main > .board > .project-details > .todo-list > .todo.current > .wrapper > .delete{
     grid-area: delete;
 }
 
-.main > .board > .project-details > .todo-list > .todo.current > .wrapper > .edit-details{
-    grid-area: details;
-    display: grid;
-    grid-template-rows: repeat(auto-fill, 25px);
-}
-
 .main > .board > .project-details > .todo-list > .todo.current > .wrapper > .submit{
-    grid-area: first;
+    grid-area: submit;
 }
