@@ -2,62 +2,7 @@ import './style.css';
 import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
-
-//                 const editButton = () => {
-//                     const button = document.createElement("button");
-//                     button.className = button.textContent = "edit";
-//                     button.addEventListener("click", () => {
-//                         div.textContent = '';
-//                         div.removeEventListener("click", expandTodo);
-//                         container.classList.add("expanded");
-
-//                         const inputTitle = document.createElement("input");
-//                         inputTitle.setAttribute("type","text");
-//                         inputTitle.id = "todoTitle";
-//                         inputTitle.value = todo.getTitle();
-
-//                         const inputDescription = document.createElement("input");
-//                         inputDescription.setAttribute("type","text");
-//                         inputDescription.id = "todoDescription";
-//                         inputDescription.value = todo.getDescription();
-
-//                         const inputDate = document.createElement("input");
-//                         inputDate.setAttribute("type","date");
-//                         inputDate.id = "todoDueDate";
-//                         inputDate.value = todo.getDueDate();
-
-//                         const selectPriority = document.createElement("select");
-//                         selectPriority.id = "todoPriority";
-
-//                         const priorities = ["High","Medium","Low"];
-//                         priorities.forEach(priority => {
-//                             const option = document.createElement("option");
-//                             option.value = priority;
-//                             option.textContent = priority;
-//                             if(priority === todo.getPriority()){
-//                                 option.selected = true;
-//                             }
-//                             selectPriority.appendChild(option);
-//                         });
-                        
-//                         const submit = document.createElement("button");
-//                         submit.className = "submit";
-//                         submit.textContent = "OK";
-//                         submit.addEventListener("click", () => {
-//                             todo.setTitle(inputTitle.value);
-//                             todo.setDescription(inputDescription.value);
-//                             todo.setDueDate(inputDate.value);
-//                             todo.setPriority(selectPriority.value);
-//                             displayProject(project);
-//                             expandTodo();
-//                         });
-
-//                         container.replaceChild(submit, container.childNodes[1]);
-//                         div.append(inputTitle,inputDescription,inputDate,selectPriority);
-//                     });
-//                     container.appendChild(button);
-//                 }
-        
+  
 //                 const deleteButton = () => {
 //                     const button = document.createElement("button");
 //                     button.className = button.textContent = "delete";
@@ -101,32 +46,6 @@ import { createTODO } from './todo';
 //             addTodoButton();
 //         }
 //     }
-
-//     const displayTodoDetails = (todo) => {
-//         const container = document.querySelector(".board > .todo");
-//         const div = document.querySelector(".board > .todo > .details");
-//         div.textContent = '';
-//         const details = {
-//             "title":todo.getTitle(),
-//             "description":todo.getDescription(),
-//             "dueDate": todo.getDueDate(),
-//             "priority":todo.getPriority(),
-//         };
-
-//         for (let detail in details) {
-//             const p = document.createElement('p');
-//             p.className = detail;
-//             p.textContent = details[detail];
-//             div.appendChild(p);
-//         }
-//         container.classList.add("expanded");
-//     }
-
-//     initialDataLoad(manager);
-//     layout();
-//     displayProjectList(manager);
-//     displayProject("all");
-// }
 
 //doc creator
 
@@ -519,6 +438,14 @@ const TodoList = (manager) => {
             const todoInput = createTodoInput(currentTodo);
             todoList.replaceChild(todoInput,todoList.childNodes[currentTodoIndex]);
             
+        }else if(target.matches(".project-details > .todo-list > .todo.current > .wrapper > .delete")){
+            //delete todo
+            currentProject.removeTodo(currentTodo);
+            //get updated todo list
+            todos = currentProject.getTodos();
+            todoList = createProjectTodoList(todos);
+            projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
+
         }else if(target.matches(".project-details > .todo-list > .todo.current.edit > .wrapper > .submit")){
             //get inputs
             const details = target.closest(".wrapper").childNodes[0];
