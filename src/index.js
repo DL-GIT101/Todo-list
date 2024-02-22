@@ -199,7 +199,7 @@ const createTodoInput = (todo) => {
 
     const todoLi = createExpandedTodoLi(todo);
     const wrapper = createDiv("wrapper");
-    const detailsInputDiv = createDiv("details");
+    const detailsInputDiv = createDiv("edit-details");
 
     const titleInput = document.createElement("input");
     titleInput.setAttribute("type","text");
@@ -217,7 +217,7 @@ const createTodoInput = (todo) => {
     dueDateInput.value = todo.getDueDate();
 
     const priortySelect = document.createElement("select");
-    priortySelect.id = "todoPriority";
+    priortySelect.id = "priority";
 
     const priorities = ["High","Medium","Low"];
     priorities.forEach(priority => {
@@ -515,27 +515,23 @@ const TodoList = (manager) => {
             projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
         
         }else if(target.matches(".project-details > .todo-list > .todo.current > .wrapper > .edit")){
+            //create todo inputs then replace the list
             const todoInput = createTodoInput(currentTodo);
             todoList.replaceChild(todoInput,todoList.childNodes[currentTodoIndex]);
             
-        }else if(target.matches(".board > .todo-list > .todo > .wrapper > .submit")){
-            // const project = board.querySelector(".project");
-            // const projectIndex = project.getAttribute("projectIndex");
-            // let  todos = projects[projectIndex].getTodos();
-            // const todoIndex =  target.closest(".todo").getAttribute("todoIndex");
-            // const todo = todos[todoIndex];
-
-            // const todoList = target.closest(".todo");
-            // const wrapper = todoList.childNodes[0];
-            // const details = wrapper.childNodes[0];
-
-            // todo.setTitle(details.childNodes[0].value);
-            // todo.setDescription(details.childNodes[1].value);
-            // todo.setDueDate(details.childNodes[2].value);
-            // todo.setPriority(details.childNodes[3].value);
-
-            // const expandedDetail = displayExpandedTodo(todo);
-            // wrapper.replaceChild(expandedDetail,wrapper.childNodes[0]);
+        }else if(target.matches(".project-details > .todo-list > .todo.current.edit > .wrapper > .submit")){
+            //get inputs
+            const details = target.closest(".wrapper").childNodes[0];
+            //set values
+            currentTodo.setTitle(details.querySelector("#title").value);
+            currentTodo.setDescription(details.querySelector("#description").value);
+            currentTodo.setDueDate(details.querySelector("#dueDate").value);
+            currentTodo.setPriority(details.querySelector("#priority").value);
+            //replace with current expanded todo li
+            todoList = createProjectTodoList(todos);
+            const expandedTodo = createExpandedTodoLi(currentTodo);
+            todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
+            projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
         }
     });
 
