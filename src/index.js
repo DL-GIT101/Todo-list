@@ -377,7 +377,7 @@ const TodoList = (manager) => {
 
         }else if(target.matches(".manager > .project-list > .project.current > .wrapper > .delete")){ //delete button
             //delete a project
-            manager.deleteProject(currentProject);
+            manager.removeProject(currentProject);
             //get new Project List
             projects = manager.getProjects()
             //append new projectList
@@ -439,7 +439,10 @@ const TodoList = (manager) => {
             todoList.replaceChild(todoInput,todoList.childNodes[currentTodoIndex]);
             
         }else if(target.matches(".project-details > .todo-list > .todo.current > .wrapper > .delete")){
-            //delete todo
+            //delete todo - add additional method remove "actual" todo
+            if(currentProject.getTitle() === "All"){
+                manager.removeTodo(currentTodo);
+            }
             currentProject.removeTodo(currentTodo);
             //get updated todo list
             todos = currentProject.getTodos();
