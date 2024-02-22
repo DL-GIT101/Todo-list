@@ -8,7 +8,7 @@ const createManager = () => {
     const manager = {
         getProjects: () => _projects,
         addProject: (project) => _projects.push(project),
-        deleteProject: (projectToBeRemove) => _projects = _projects.filter(project => project !== projectToBeRemove),
+        removeProject: (projectToBeRemove) => _projects = _projects.filter(project => project !== projectToBeRemove),
         getAllTodos: () => {
             const allTodo = [];
             _projects.forEach(project => {
@@ -16,6 +16,7 @@ const createManager = () => {
             })
             return allTodo;
         },
+        removeTodo: (todo) => _projects.forEach(project => {project.removeTodo(todo)}),
     }
 
     return manager;
