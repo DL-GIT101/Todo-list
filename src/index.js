@@ -282,7 +282,9 @@ const createProjectDetails = (project) => {
 
     const projectUL = createProjectTodoList(project.getTodos());
 
-    projectContainer.append(projectTitle,projectUL);
+    const projectTodoAddButton = createButton("add", "Add");
+
+    projectContainer.append(projectTitle,projectUL,projectTodoAddButton);
 
     return projectContainer;
 }
