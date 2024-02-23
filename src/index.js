@@ -315,6 +315,7 @@ const TodoList = (manager) => {
 
     let currentProjectIndex;
     let currentProject;
+    let projectDetails;
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
@@ -330,7 +331,7 @@ const TodoList = (manager) => {
                 currentProject.addTodo(todo);
             });
 
-            const projectDetails = createProjectDetails(currentProject);
+            projectDetails = createProjectDetails(currentProject);
             //remove edit title button
             const titleHolder = projectDetails.childNodes[0];
             titleHolder.removeChild(titleHolder.lastChild);
@@ -352,7 +353,7 @@ const TodoList = (manager) => {
             sidebar.replaceChild(projectList,sidebar.childNodes[1]);
 
             currentProject = projects[currentProjectIndex];
-            const projectDetails = createProjectDetails(currentProject);
+            projectDetails = createProjectDetails(currentProject);
             if(!board.hasChildNodes()){
                 board.appendChild(projectDetails);
             }else{
@@ -370,7 +371,7 @@ const TodoList = (manager) => {
             sidebar.replaceChild(projectList,sidebar.childNodes[1]);
 
             currentProject = projects[currentProjectIndex];
-            const projectDetails = createProjectDetails(currentProject);
+            projectDetails = createProjectDetails(currentProject);
             if(!board.hasChildNodes()){
                 board.appendChild(projectDetails);
             }else{
@@ -389,7 +390,6 @@ const TodoList = (manager) => {
         }
     });
 
-    let projectDetails;
     let todoList;
     let todos;
     let currentTodoIndex;
@@ -400,8 +400,6 @@ const TodoList = (manager) => {
         console.log(target);
 
         if(target.matches(".project-details > .title-holder >.rename")){ //rename button
-            //get project Container
-            projectDetails = target.closest(".project-details");
             //create input and append
             const titleInput = createProjectTitleInput(currentProject);
             projectDetails.replaceChild(titleInput, projectDetails.firstElementChild);
@@ -423,8 +421,7 @@ const TodoList = (manager) => {
 
         }else if(target.closest(".project-details > .todo-list > .todo > .wrapper > .details")){
             //get current todos and todo
-            projectDetails = target.closest(".project-details");
-            todoList = target.closest(".todo-list");
+            todoList = projectDetails.childNodes[1];
             const todoListArray = [...todoList.childNodes];
             currentTodoIndex = todoListArray.indexOf(target.closest(".todo"));
             todos = currentProject.getTodos();
@@ -460,6 +457,16 @@ const TodoList = (manager) => {
             currentTodo.setDueDate(details.querySelector("#dueDate").value);
             currentTodo.setPriority(details.querySelector("#priority").value);
             //replace with current expanded todo li
+            todoList = createProjectTodoList(todos);
+            const expandedTodo = createExpandedTodoLi(currentTodo);
+            todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
+            projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
+        }else if(target.matches(".project-details > .add")){
+            currentTodo = createTODO("Title","Description","2024-01-01","Low");
+            currentProject.addTodo(currentTodo);
+            //get updated todo list
+            todos = currentProject.getTodos();
+            currentTodoIndex = todos.length - 1;
             todoList = createProjectTodoList(todos);
             const expandedTodo = createExpandedTodoLi(currentTodo);
             todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
