@@ -211,3 +211,14 @@ body {
 .main > .board > .project-details > .todo-list > .todo.current.edit > .wrapper > .submit{
     grid-area: submit;
 }
+
+.main > .board >.project-details > .add {
+    font-size: 20px;
+    background-color: var(--color-primary);
+    border: none;
+}
+
+.main > .board >.project-details > .add:hover{
+    cursor: pointer;
+    background-color: var(--color-background);
+}
