@@ -274,6 +274,10 @@ const TodoList = (manager) => {
     let currentProject;
     let projectDetails;
 
+    //separate project for all todos
+    const allTodosProject = createProject("Default");
+    let getAllTodos = manager.getAllTodos();
+
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
 
@@ -281,16 +285,23 @@ const TodoList = (manager) => {
             //delete button on when clicked
             projectList = createProjectList(projects);
             sidebar.replaceChild(projectList,sidebar.childNodes[1]);
-            //separate project for all todos
-            const allTodos = manager.getAllTodos();
-            currentProject = createProject("All");
-            allTodos.forEach(todo => {
-                currentProject.addTodo(todo);
+            //remove not "All" project todos
+            const allTodosProjectTodos = allTodosProject.getTodos();
+            allTodosProjectTodos.forEach(todo => {
+                if(todo.getProject() !== "Default" ){
+                    allTodosProject.removeTodo(todo)
+                }
+            })
+            //add project todos
+            let getAllTodos = manager.getAllTodos();
+            getAllTodos.forEach(todo => {
+                allTodosProject.addTodo(todo);
             });
-
+            currentProject = allTodosProject;
             projectDetails = createProjectDetails(currentProject);
             //remove edit title button
             const titleHolder = projectDetails.childNodes[0];
+            titleHolder.firstChild.textContent = "All";
             titleHolder.removeChild(titleHolder.lastChild);
             
             if(!board.hasChildNodes()){
@@ -396,7 +407,7 @@ const TodoList = (manager) => {
             
         }else if(target.matches(".project-details > .todo-list > .todo.current > .wrapper > .delete")){
             //delete todo - add additional method remove "actual" todo
-            if(currentProject.getTitle() === "All"){
+            if(currentProject.getTitle() === "Default"){
                 manager.removeTodo(currentTodo);
             }
             currentProject.removeTodo(currentTodo);
@@ -440,10 +451,10 @@ const sampleManagerCreator = () => {
     const workProject = createProject("Work");
     const choreProject = createProject("Chores");
 
-    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "2024-03-02", "Medium");
-    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium");
-    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High");
-    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "2024-04-18", "Low");
+    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "2024-03-02", "Medium",choreProject.getTitle());
+    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
+    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High",workProject.getTitle());
+    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "2024-04-18", "Low",choreProject.getTitle());
 
     choreProject.addTodo(todo1);
     choreProject.addTodo(todo4);
