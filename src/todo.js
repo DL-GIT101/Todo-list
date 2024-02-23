@@ -1,11 +1,13 @@
+import { format } from "date-fns";
+import { startOfToday } from "date-fns";
 
-const createTODO = (title = "Title", description = "Description", dueDate = "2024-01-01", priority = "Low") => {
+const createTODO = (title = "Title", description = "Description", dueDate = format(startOfToday(), "yyyy-MM-dd"), priority = "Low", project = "Default") => {
     
     let _title = title;
     let _description = description;
     let _dueDate = dueDate;
     let _priority = priority;
-    let _project = "Default";
+    let _project = project;
 
     const todo = {
         getTitle: () => _title,
