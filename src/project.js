@@ -9,10 +9,7 @@ const createProject = (title) => {
         setTitle: (newTitle) => _title = newTitle, 
         getTitle: () => _title,
         getTodos: () => _todos,
-        addTodo: (todo) => {
-            todo.setProject(_title);
-            _todos.push(todo);
-        },
+        addTodo: (todo) => _todos.push(todo),
         removeTodo: (todoToBeRemove) => _todos =_todos.filter(todo => todo !== todoToBeRemove),
 
     }
