@@ -2,51 +2,8 @@ import './style.css';
 import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
+import {format} from "date-fns";
   
-//                 const deleteButton = () => {
-//                     const button = document.createElement("button");
-//                     button.className = button.textContent = "delete";
-//                     button.addEventListener("click", () => {
-                        
-//                     });
-//                     container.appendChild(button);
-//                 }
-    
-//                 div.append(title,dueDate);
-
-//                 const expandTodo = () => {
-//                     displayTodoDetails(todo);
-//                 }
-
-//                 div.addEventListener("click", expandTodo);
-//                 container.appendChild(div);
-//                 editButton();
-//                 deleteButton();
-//                 board.appendChild(container);
-//             });
-//         }
-
-//         const addTodoButton = () => {
-//             const container = document.createElement("container");
-//             container.className = "todo add";
-        
-//             const title = document.createElement("p");
-//             title.className = "title";
-//             title.textContent = "+";
-//             container.appendChild(title);
-//             board.appendChild(container);
-//         }
-
-//         if(project === "all"){
-//             displayAllTodos(manager.getAllTodos());
-//             addTodoButton();
-//         }else {
-//             title();
-//             displayAllTodos(project.getTodos());
-//             addTodoButton();
-//         }
-//     }
-
 //doc creator
 
 const createButton = (name,text) => {
@@ -462,7 +419,7 @@ const TodoList = (manager) => {
             todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
             projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
         }else if(target.matches(".project-details > .add")){
-            currentTodo = createTODO("Title","Description","2024-01-01","Low");
+            currentTodo = createTODO();
             currentProject.addTodo(currentTodo);
             //get updated todo list
             todos = currentProject.getTodos();

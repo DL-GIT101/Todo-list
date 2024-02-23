@@ -1,4 +1,5 @@
-const createTODO = (title, description, dueDate, priority) => {
+
+const createTODO = (title = "Title", description = "Description", dueDate = "2024-01-01", priority = "Low") => {
     
     let _title = title;
     let _description = description;
