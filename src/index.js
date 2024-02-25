@@ -3,6 +3,7 @@ import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
 import {compareAsc, format} from "date-fns";
+import { sample } from 'lodash';
   
 //doc creator
 
@@ -366,7 +367,6 @@ const TodoList = (manager) => {
 
     board.addEventListener("click", (event) => {
         const target = event.target;
-        console.log(target);
 
         if(target.matches(".project-details > .title-holder >.rename")){ //rename button
             //create input and append
@@ -444,31 +444,13 @@ const TodoList = (manager) => {
         }
     });
 
+    document.addEventListener('click', () => {
+        localStorage.setItem("todoList", managerIntoJSON(manager));
+    });
+
 }   
 
-const sampleManagerCreator = () => {
-
-    const sampleManager = createManager();
-
-    const workProject = createProject("Work");
-    const choreProject = createProject("Chores");
-
-    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "2024-03-02", "Medium",choreProject.getTitle());
-    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
-    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High",workProject.getTitle());
-    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "2024-04-18", "Low",choreProject.getTitle());
-
-    choreProject.addTodo(todo1);
-    choreProject.addTodo(todo4);
-    workProject.addTodo(todo2);
-    workProject.addTodo(todo3);
-
-    sampleManager.addProject(workProject);
-    sampleManager.addProject(choreProject);
-
-    return sampleManager;
-}
-
+// localStorage
 const getTodoProperties = (todo) => {
     
     const properties = {
@@ -535,19 +517,28 @@ const parseIntoTodo = (todoParse) => {
     return createTODO(todoParse.title,todoParse.description,todoParse.dueDate,todoParse.priority,todoParse.project);
 }
 
-const workProject = createProject("Work");
-const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
-const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High",workProject.getTitle());
-workProject.addTodo(todo2);
-workProject.addTodo(todo3);
+const sampleManagerCreator = () => {
 
-const manager = createManager();
-manager.addProject(workProject);
+    const sampleManager = createManager();
 
-localStorage.setItem("manager", managerIntoJSON(manager));
+    const workProject = createProject("Work");
+    const choreProject = createProject("Chores");
 
-const managerJSON = localStorage.getItem("manager");
-const managerLocal = jsonIntoManager(managerJSON);
+    const todo1 = createTODO("Buy Groceries","Pick up fruits, vegetables, and bread", "2024-03-02", "Medium",choreProject.getTitle());
+    const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
+    const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High",workProject.getTitle());
+    const todo4 = createTODO("Call Mom", "Check in with Mom and wish her a happy birthday", "2024-04-18", "Low",choreProject.getTitle());
+
+    choreProject.addTodo(todo1);
+    choreProject.addTodo(todo4);
+    workProject.addTodo(todo2);
+    workProject.addTodo(todo3);
+
+    sampleManager.addProject(workProject);
+    sampleManager.addProject(choreProject);
+
+    return sampleManager;
+}
 
 TodoList(sampleManagerCreator());
 
