@@ -484,15 +484,28 @@ const getTodoProperties = (todo) => {
     return properties;
 }
 
-const projectIntoJSON = (project) => {
+const getProjectProperties = (project) => {
     
     const todosArray = project.getTodos();
-    const todosJSON = todosArray.map(getTodoProperties);
+    const todoProperties = todosArray.map(getTodoProperties);
 
     const properties = {
 
         title: project.getTitle(),
-        todos: todosJSON,
+        todos: todoProperties,
+    }
+
+    return properties;
+}
+
+const managerIntoJSON = (manager) => {
+    
+    const projectsArray = manager.getProjects();
+    const projectProperties = projectsArray.map(getProjectProperties);
+
+    const properties = {
+
+        projects: projectProperties,
     }
 
     return JSON.stringify(properties);
@@ -504,8 +517,10 @@ const todo3 = createTODO("Complete Report", "Finish the quarterly report for the
 workProject.addTodo(todo2);
 workProject.addTodo(todo3);
 
-localStorage.setItem("project", projectIntoJSON(workProject));
+const manager = createManager();
+manager.addProject(workProject);
 
+localStorage.setItem("manager", managerIntoJSON(manager));
 
 TodoList(sampleManagerCreator());
 
