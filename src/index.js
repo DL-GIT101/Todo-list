@@ -540,5 +540,14 @@ const sampleManagerCreator = () => {
     return sampleManager;
 }
 
-TodoList(sampleManagerCreator());
+let manager;
+
+if (localStorage.length === 0) {
+    manager = sampleManagerCreator();
+} else {
+   const jsonManager = localStorage.getItem("todoList");
+   manager = jsonIntoManager(jsonManager);
+}
+
+TodoList(manager);
 
