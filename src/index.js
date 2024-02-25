@@ -524,10 +524,15 @@ const parseIntoProject = (projectsParse) => {
     const todos = projectsParse.todos;
  
     todos.forEach(todo => {
-        project.addTodo(todo);
+        project.addTodo(parseIntoTodo(todo));
     })
 
     return project;
+}
+
+const parseIntoTodo = (todoParse) => {
+
+    return createTODO(todoParse.title,todoParse.description,todoParse.dueDate,todoParse.priority,todoParse.project);
 }
 
 const workProject = createProject("Work");
@@ -543,7 +548,6 @@ localStorage.setItem("manager", managerIntoJSON(manager));
 
 const managerJSON = localStorage.getItem("manager");
 const managerLocal = jsonIntoManager(managerJSON);
-console.log(managerLocal.getProjects());
 
 TodoList(sampleManagerCreator());
 
