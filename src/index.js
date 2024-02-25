@@ -503,13 +503,21 @@ const managerIntoJSON = (manager) => {
     const projectsArray = manager.getProjects();
     const projectProperties = projectsArray.map(getProjectProperties);
 
-    const properties = {
-
-        projects: projectProperties,
-    }
-
-    return JSON.stringify(properties);
+    return JSON.stringify(projectProperties);
 }
+
+const jsonIntoManager = (managerJSON) => {
+
+    const parseManager = JSON.parse(managerJSON);
+    const manager = createManager();
+ 
+    parseManager.forEach(project => {
+        manager.addProject(project);
+    })
+
+    return manager;
+}
+
 
 const workProject = createProject("Work");
 const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
@@ -521,6 +529,9 @@ const manager = createManager();
 manager.addProject(workProject);
 
 localStorage.setItem("manager", managerIntoJSON(manager));
+
+const managerJSON = localStorage.getItem("manager");
+const managerLocal = jsonIntoManager(managerJSON);
 
 TodoList(sampleManagerCreator());
 
