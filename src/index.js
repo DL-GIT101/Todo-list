@@ -133,7 +133,7 @@ const createExpandedTodoLi = (todo) => {
 
     const dueDate = document.createElement("p");
     dueDate.className = "dueDate";
-    dueDate.textContent = todo.getDueDate();
+    dueDate.textContent = format(todo.getDueDate(), "PPPP");
 
     const priority = document.createElement("p");
     priority.className = "priority";
@@ -170,7 +170,7 @@ const createTodoLi = (todo) => {
 
     const dueDate = document.createElement("p");
     dueDate.className = "dueDate";
-    dueDate.textContent = todo.getDueDate();
+    dueDate.textContent = format(todo.getDueDate(), "PPPP");
 
     //style depending on piority
     todoLi.classList.add((todo.getPriority()).toLowerCase());
@@ -276,7 +276,6 @@ const TodoList = (manager) => {
 
     //separate project for all todos
     const allTodosProject = createProject("Default");
-    let getAllTodos = manager.getAllTodos();
 
     sidebar.addEventListener("click", (event) => {
         const target = event.target;
