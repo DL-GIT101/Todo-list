@@ -427,6 +427,7 @@ const TodoList = (manager) => {
             currentTodo.setPriority(details.querySelector("#priority").value);
             //replace with current expanded todo li
             todoList = createProjectTodoList(todos);
+            currentTodoIndex = todos.findIndex((todo) => todo === currentTodo);
             const expandedTodo = createExpandedTodoLi(currentTodo);
             todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
             projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
@@ -435,8 +436,8 @@ const TodoList = (manager) => {
             currentProject.addTodo(currentTodo);
             //get updated todo list
             todos = currentProject.getTodos();
-            currentTodoIndex = todos.length - 1;
             todoList = createProjectTodoList(todos);
+            currentTodoIndex = todos.findIndex((todo) => todo === currentTodo);
             const expandedTodo = createExpandedTodoLi(currentTodo);
             todoList.replaceChild(expandedTodo, todoList.childNodes[currentTodoIndex]);
             projectDetails.replaceChild(todoList,projectDetails.childNodes[1]);
