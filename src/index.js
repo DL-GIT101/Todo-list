@@ -469,5 +469,31 @@ const sampleManagerCreator = () => {
     return sampleManager;
 }
 
+const todoIntoJSON = (todo) => {
+    
+    const properties = {
+
+        title: todo.getTitle(),
+        description: todo.getDescription(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+        project: todo.getProject(),
+
+    }
+
+    return JSON.stringify(properties);
+    
+}
+
+const workProject = createProject("Work");
+const todo2 = createTODO("Plan Vacation", "Research destinations and book accommodations", "2024-06-25", "Medium",workProject.getTitle());
+const todo3 = createTODO("Complete Report", "Finish the quarterly report for the team meeting", "2024-02-15", "High",workProject.getTitle());
+workProject.addTodo(todo2);
+workProject.addTodo(todo3);
+
+console.log(todoIntoJSON(todo2));
+localStorage.setItem("todo", todoIntoJSON(todo2));
+
+
 TodoList(sampleManagerCreator());
 
