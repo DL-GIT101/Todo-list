@@ -2,7 +2,7 @@ import './style.css';
 import { createManager } from "./manager";
 import { createProject } from "./project";
 import { createTODO } from './todo';
-import {format} from "date-fns";
+import {compareAsc, format} from "date-fns";
   
 //doc creator
 
@@ -187,6 +187,8 @@ const createProjectTodoList = (todos) => {
 
     const todoUl = document.createElement("UL");
     todoUl.className = "todo-list";
+
+    todos.sort((a,b) => compareAsc(a.getDueDate(),b.getDueDate()));
 
     todos.forEach( todo => {
 
